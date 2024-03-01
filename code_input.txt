@@ -1,0 +1,37 @@
+[PYTHON]
+import unittest
+
+class TestInventoryManagementSystem(unittest.TestCase):
+
+    def test_create_inventory_management_system(self):
+        inventory_system = InventoryManagementSystem()
+        self.assertIsInstance(inventory_system, InventoryManagementSystem)
+
+    def test_add_product(self):
+        inventory_system = InventoryManagementSystem()
+        inventory_system.add_product("Item1", 10, 5.99)
+        self.assertIn("Item1", inventory_system.products)
+
+    def test_update_quantity(self):
+        inventory_system = InventoryManagementSystem()
+        inventory_system.add_product("Item1", 10, 5.99)
+        inventory_system.update_quantity("Item1", 15)
+        self.assertEqual(inventory_system.products["Item1"]["quantity"], 15)
+
+    def test_set_price(self):
+        inventory_system = InventoryManagementSystem()
+        inventory_system.add_product("Item1", 10, 5.99)
+        inventory_system.set_price("Item1", 7.99)
+        self.assertEqual(inventory_system.products["Item1"]["price"], 7.99)
+
+    def test_view_inventory(self):
+        inventory_system = InventoryManagementSystem()
+        inventory_system.add_product("Item1", 10, 5.99)
+        inventory_system.add_product("Item2", 5, 9.99)
+        inventory_view = inventory_system.view_inventory()
+        self.assertIn("Item1", inventory_view)
+        self.assertIn("Item2", inventory_view)
+
+if __name__ == '__main__':
+    unittest.main()
+[/PYTHON]

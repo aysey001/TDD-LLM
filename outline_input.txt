@@ -1,0 +1,3 @@
+[INST]
+I want to input a set of 5 different number into the terminal and the program determines which of those are prime numbers.
+[/INST]

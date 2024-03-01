@@ -1,0 +1,6 @@
+[LIST]
+1. get_inputs() # save 5 user inputs into a list of values and returns it
+2. calc_prime_number(value)  # calculate the prime numbers from the list of elements and returns a boolean
+3. print_prime_number(value, is_prime) # print the prime numbers # takes a value and a boolean and returns the value, if boolean is true
+4. main() # use get_inputs() to get the inputs, iterate over the list with calc_prime_number and print_prime_number
+[/LIST]

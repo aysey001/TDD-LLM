@@ -1,0 +1,5 @@
+[LIST]
+1. Create a class for the inventory management system with attributes representing the state of the inventory (e.g., products, quantities, prices).
+2. Define a main() function to serve as the program's entry point, allowing users to choose from different options through a menu.
+3. Write functions for essential inventory operations, such as adding products, updating quantities, setting prices, and viewing the inventory.
+[/LIST]

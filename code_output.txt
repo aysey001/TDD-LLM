@@ -1,0 +1,64 @@
+[PYTHON]
+class InventoryManagementSystem:
+    def __init__(self):
+        self.products = {}
+
+    def add_product(self, name, quantity, price):
+        if not isinstance(quantity, int) or not isinstance(price, (int, float)):
+            raise ValueError("Invalid quantity or price")
+        self.products[name] = {"quantity": quantity, "price": price}
+
+    def update_quantity(self, name, new_quantity):
+        if name not in self.products:
+            raise ValueError(f"Product {name} not found")
+        self.products[name]["quantity"] = new_quantity
+
+    def set_price(self, name, new_price):
+        if name not in self.products:
+            raise ValueError(f"Product {name} not found")
+        self.products[name]["price"] = new_price
+
+    def view_inventory(self):
+        return list(self.products.keys())
+
+
+def main():
+    inventory_system = InventoryManagementSystem()
+
+    while True:
+        print("\nMenu:")
+        print("1. Add Product")
+        print("2. Update Quantity")
+        print("3. Set Price")
+        print("4. View Inventory")
+        print("5. Quit")
+
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == "5":
+            print("Exiting the Inventory Management System. Goodbye!")
+            break
+
+        try:
+            if choice == "1":
+                inventory_system.add_product(*input("Enter product name, quantity, and price: ").split())
+
+            elif choice == "2":
+                inventory_system.update_quantity(*input("Enter product name and new quantity: ").split())
+
+            elif choice == "3":
+                inventory_system.set_price(*input("Enter product name and new price: ").split())
+
+            elif choice == "4":
+                inventory_view = inventory_system.view_inventory()
+                print(f"Current Inventory: {inventory_view or 'Empty'}")
+
+            else:
+                print("Invalid choice. Please enter a number between 1 and 5.")
+
+        except ValueError as e:
+            print(f"Error: {e}")
+
+if __name__ == '__main__':
+    main()
+[/PYTHON]

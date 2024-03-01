@@ -1,0 +1,30 @@
+task = """
+I want you to create a structure for a system that simulates basic banking operations. 
+This system should allow users to establish bank accounts, manage money transactions (deposits and withdrawals), 
+and check their account balance. Design a user-friendly main interface with a menu to guide users through the various functionalities, 
+and make sure the system can handle user inputs appropriately.
+"""
+
+prompt = """
+Your task is to divide the following coding problem into a numbered list of python tasks, such as imports or function signatures, or classes, required to solve the problem.
+Do not write outside the numbered list.
+Here is an example:
+
+[INST] I want to input a set of 5 different number into the terminal and the program determines which of those are prime numbers. [/INST]
+#Your reply should look like this:
+[LIST]
+1. get_inputs() # save 5 user inputs into a list of values and returns it
+2. calc_prime_number(value)  # calculate the prime numbers from the list of elements and returns a boolean
+3. print_prime_number(value, is_prime) # print the prime numbers # takes a value and a boolean and returns the value, if boolean is true
+4. main() # use get_inputs() to get the inputs, iterate over the list with calc_prime_number and print_prime_number
+[/LIST]
+
+output = """
+1. Create a class for the banking system that includes all the necessary functions and attributes to operate the system.
+2. Define a main() function that acts as the entry point for the program, where users can select from different options using a menu.
+3. Write functions for each of the banking operations (e.g., create account, deposit money, withdraw money, check balance) and make sure they are properly implemented.
+4. Implement error handling mechanisms to ensure the system can handle user inputs correctly and prevent errors from occurring.
+5. Use a user-friendly main menu to guide users through the various functionalities of the banking system.
+6. Ensure that all functions and classes have appropriate documentation strings and docstrings.
+7. Test the system thoroughly using various test cases to ensure it works as intended and identify any issues or bugs.
+"""
