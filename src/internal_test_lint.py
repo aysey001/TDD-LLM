@@ -1,4 +1,5 @@
-from verify import lintingTest
+from lintingTest import lintingTest
+
 
 def main():
     text = """
@@ -12,6 +13,6 @@ print(factorial(5))  # Output: 120
 
 """
     print(text)
-    lt = lintingTest.lintingTest(text)
+    lt = lintingTest(text)
     print(lt.run_lint())
 main()

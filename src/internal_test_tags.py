@@ -1,21 +1,21 @@
-from verify import tagHandler
+import tagHandler
 def main():
     text = """[PYTHON]
 import pylint.lint
 [/PYTHON]"""
-    tHp = tagHandler(text)
+    tHp = tagHandler.tagHandler(text)
     text2 = """[LIST]
 1. test
 2. hallo
 3. world
 [/LIST]"""
-    tHl = tagHandler(text2)
+    tHl = tagHandler.tagHandler(text2)
 
     text3 = """[TESTS]
 def test1():
     pass
 [/TESTS]"""
-    tht = tagHandler(text3)
+    tht = tagHandler.tagHandler(text3)
 
             
     print(text)
