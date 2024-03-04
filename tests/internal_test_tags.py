@@ -1,4 +1,4 @@
-from  tagHandler import tagHandler
+from verify import tagHandler
 def main():
     text = """[PYTHON]
 import pylint.lint
