@@ -1,0 +1,24 @@
+************* Module tmp0x6ocj6p
+C:\Users\seyhan\AppData\Local\Temp\tmp0x6ocj6p:19:15: E0602: Undefined variable 'se' (undefined-variable)
+
+-----------------------------------
+Your code has been rated at 6.15/10
+
+class InventoryManagementSystem:
+    def __init__(self):
+        self.products = {}
+
+    def add_product(self, name, quantity, price):
+        self.products[name] = {"quantity": quantity, "price": price}
+
+    def update_quantity(self, name, quantity):
+        if name in self.products:
+            self.products[name]["quantity"] = quantity
+
+    def set_price(self, name, price):
+        if name in self.products:
+            self.products[name]["price"] = price
+
+    def view_inventory(self):
+        return se
+

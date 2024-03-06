@@ -1,4 +1,6 @@
 [INST] <<SYS>>
 Your task is to divide the following coding problem into a numbered list of python tasks, such as function signatures, or classes or other descriptions required to solve the problem.
+Begin your reply with [LIST]
 Do not write outside the numbered list.
+End your reply with [/LIST]
 <</SYS>> [/INST]

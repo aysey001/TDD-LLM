@@ -1,5 +1,6 @@
 [TESTS]
 import unittest
+import InventoryManagementSystem
 
 class TestInventoryManagementSystem(unittest.TestCase):
 

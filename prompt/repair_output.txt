@@ -1,0 +1,19 @@
+[PYTHON]
+class InventoryManagementSystem:
+    def __init__(self):
+        self.products = {}
+
+    def add_product(self, name, quantity, price):
+        self.products[name] = {"quantity": quantity, "price": price}
+
+    def update_quantity(self, name, quantity):
+        if name in self.products:
+            self.products[name]["quantity"] = quantity
+
+    def set_price(self, name, price):
+        if name in self.products:
+            self.products[name]["price"] = price
+
+    def view_inventory(self):
+        return self.products
+[/PYTHON]

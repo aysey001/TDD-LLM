@@ -6,4 +6,4 @@ python -m llama_cpp.server ^
 --chat_format chatml ^
 --cache 1 ^
 --verbose True ^
---seed -1
+--seed 1234

@@ -1,21 +1,21 @@
-import tagHandler
+from testers.tagHandler import tagHandler
 def main():
     text = """[PYTHON]
 import pylint.lint
 [/PYTHON]"""
-    tHp = tagHandler.tagHandler(text)
+    tHp = tagHandler(text)
     text2 = """[LIST]
 1. test
 2. hallo
 3. world
 [/LIST]"""
-    tHl = tagHandler.tagHandler(text2)
+    tHl = tagHandler(text2)
 
     text3 = """[TESTS]
 def test1():
     pass
 [/TESTS]"""
-    tht = tagHandler.tagHandler(text3)
+    tht = tagHandler(text3)
 
             
     print(text)
@@ -25,9 +25,11 @@ def test1():
     print(text2)
     print(tHl.has_list_tags())
     print(tHl.remove_list_tags())
+    print(tHl.text)
 
     print(text3)
     print(tht.has_tests_tags())
     print(tht.remove_tests_tags())
+    print(tht.text)
 
 main()

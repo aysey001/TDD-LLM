@@ -1,0 +1,106 @@
+[LIST]
+1. create_account() # create an account and return an account object
+2. login() # login and return an account object if successful
+3. deposit() # deposit amount and update balance
+4. withdraw() # withdraw amount and update balance
+5. get_balance() # get balance and return it
+6. transfer() # transfer amount from one account to another and update balances
+7. logout() # logout and return None
+8. main() # use create_account(), login(), deposit(), withdraw(), get_balance(), transfer() and logout() functions in a loop
+[/LIST]
+-------------------------------------------------------------------------------------------------------------------------------------------------
+[TESTS]
+import unittest
+import BankAccount
+
+class TestBankAccount(unittest.TestCase):
+
+    def test_create_account(self):
+        account = BankAccount.create_account("John Doe", 1000)
+        self.assertIsInstance(account, BankAccount)
+        self.assertEqual(account.owner, "John Doe")
+        self.assertEqual(account.balance, 1000)
+
+    def test_login(self):
+        account = BankAccount("John Doe", 1000)
+        account2 = BankAccount.login(account.owner, account.pin)
+        self.assertIsInstance(account2, BankAccount)
+        self.assertEqual(account2.owner, account.owner)
+        self.assertEqual(account2.balance, account.balance)
+
+    def test_deposit(self):
+        account = BankAccount("John Doe", 1000)
+        account.deposit(500)
+        self.assertEqual(account.balance, 1500)
+
+    def test_withdraw(self):
+        account = BankAccount("John Doe", 1000)
+        account.withdraw(500)
+        self.assertEqual(account.balance, 500)
+
+    def test_get_balance(self):
+        account = BankAccount("John Doe", 1000)
+        self.assertEqual(account.get_balance(), 1000)
+
+    def test_transfer(self):
+        account1 = BankAccount("John Doe", 1000)
+        account2 = BankAccount("Jane Doe", 500)
+        account1.transfer(account2, 200)
+        self.assertEqual(account1.balance, 800)
+        self.assertEqual(account2.balance, 700)
+
+    def test_logout(self):
+        account = BankAccount("John Doe", 1000)
+        account2 = BankAccount.logout(account)
+        self.assertIsNone(account2)
+        self.assertIsNone(account)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]
+-------------------------------------------------------------------------------------------------------------------------------------------------
+[PYTHON]
+class BankAccount:
+    def __init__(self, owner, balance):
+        self.owner = owner
+        self.balance = balance
+        self.pin = None
+        self.logged_in = False
+
+    @classmethod
+    def create_account(cls, owner, balance):
+        account = cls(owner, balance)
+        account.pin = cls.generate_pin()
+        return account
+
+    @classmethod
+    def login(cls, owner, pin):
+        account = cls(owner, 0)
+        account.pin = pin
+        account.logged_in = True
+        return account
+
+    @classmethod
+    def logout(cls, account):
+        account.logged_in = False
+        account.pin = None
+        return None
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        self.balance -= amount
+
+    def get_balance(self):
+        return self.balance
+
+    def transfer(self, amount):
+        self.balance -= amount
+
+    @classmethod
+    def generate_pin(cls):
+        return 1234
+[/PYTHON]
+-------------------------------------------------------------------------------------------------------------------------------------------------
+done!
