@@ -1,10 +1,10 @@
-# Autonomous Software Development: A Pipeline for Test-Driven Development utilizing Large Language Models
+# TDD-LLM
 
-This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-Generation by simulating test-driven-development loops to generate a minimum-viable-product with no human intervention.
+Autonomous Software Development: A Pipeline for Test-Driven Development utilizing Large Language Models
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-Generation by simulating test-driven-development loops to generate a minimum-viable-product with no human intervention.
 
 ## Getting Started
 
