@@ -1,0 +1,162 @@
+[LIST]
+1. Create a user-friendly interface for data input and output
+2. Develop the data manipulation functions, including filtering and sorting
+3. Implement data visualization tools, including charts and graphs
+4. Integrate the software with various data sources, including CSV and Excel formats
+5. Test and debug the software to ensure its functionality and accuracy
+[/LIST]
+[TESTS]
+import unittest
+import DataInputOutputInterface
+
+class TestDataInputOutputInterface(unittest.TestCase):
+
+    def test_data_input(self):
+        interface = DataInputOutputInterface()
+        interface.data_input(["Item1", "Item2", "Item3"])
+        self.assertEqual(interface.data, ["Item1", "Item2", "Item3"])
+
+    def test_data_output(self):
+        interface = DataInputOutputInterface()
+        interface.data = ["Item1", "Item2", "Item3"]
+        output = interface.data_output()
+        self.assertEqual(output, ["Item1", "Item2", "Item3"])
+
+    def test_filter_data(self):
+        interface = DataInputOutputInterface()
+        interface.data = ["Item1", "Item2", "Item3"]
+        interface.filter_data(lambda x: x == "Item2")
+        self.assertEqual(interface.data, ["Item2"])
+
+    def test_sort_data(self):
+        interface = DataInputOutputInterface()
+        interface.data = ["Item3", "Item1", "Item2"]
+        interface.sort_data()
+        self.assertEqual(interface.data, ["Item1", "Item2", "Item3"])
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]
+[PYTHON]
+class DataInputOutputInterface:
+    def __init__(self):
+        self.data = []
+
+    def data_input(self, data):
+        self.data = data
+
+    def data_output(self):
+        return self.data
+
+    def filter_data(self, predicate):
+        self.data = list(filter(predicate, self.data))
+
+    def sort_data(self):
+        self.data.sort()
+
+if __name__ == '__main__':
+    main()
+[/PYTHON]
+Error in Code. repairing... 1/3
+[PYTHON]
+class DataInputOutputInterface:
+    def __init__(self):
+        self.data = []
+
+    def data_input(self, data):
+        self.data = data
+
+    def data_output(self):
+        return self.data
+
+    def filter_data(self, predicate):
+        self.data = list(filter(predicate, self.data))
+
+    def sort_data(self):
+        self.data.sort()
+
+if __name__ == '__main__':
+    interface = DataInputOutputInterface()
+    interface.data_input([1, 2, 3, 4, 5])
+    print(interface.data_output())
+    interface.filter_data(lambda x: x % 2 == 0)
+    print(interface.data_output())
+    interface.sort_data()
+    print(interface.data_output())
+[/PYTHON]
+done!
+PS C:\Users\seyhan\OneDrive - adesso Group\Desktop\Projekt\Aydin-Bachelorarbeit\Aydin_BA_neu> & "c:/Users/seyhan/OneDrive - adesso Group/Desktop/Projekt/Aydin-Bachelorarbeit/Aydin_BA_neu/.venv/Scripts/python.exe" "c:/Users/seyhan/OneDrive - adesso Group/Desktop/Projekt/Aydin-Bachelorarbeit/Aydin_BA_neu/src/llmchain_method.py"
+[LIST]
+1. Create a user-friendly interface for the user to select the data file and choose the desired features
+2. Implement the data manipulation functions (filtering and sorting) using appropriate algorithms and data structures
+3. Provide options for data visualization and reporting using appropriate libraries and frameworks (e.g., Matplotlib for data visualization and Pandas for data manipulation)
+4. Implement error handling and exception handling for edge cases
+5. Test and debug the application thoroughly to ensure its functionality and performance
+6. Deploy the application in a suitable environment for deployment (e.g., cloud-based hosting services)
+7. Provide user documentation and support for the application
+8. Continuously update and improve the application based on user feedback and new developments in data analytics and visualization techniques
+[/LIST]
+[TESTS]
+import unittest
+import DataAnalytics
+
+class TestDataAnalytics(unittest.TestCase):
+
+    def test_create_data_analytics(self):
+        data_analytics = DataAnalytics()
+        self.assertIsInstance(data_analytics, DataAnalytics)
+
+    def test_load_data(self):
+        data_analytics = DataAnalytics()
+        data_analytics.load_data("data/data.csv")
+        self.assertTrue(data_analytics.data)
+
+    def test_filter_data(self):
+        data_analytics = DataAnalytics()
+        data_analytics.load_data("data/data.csv")
+        filtered_data = data_analytics.filter_data("age", ">", 30)
+        self.assertEqual(filtered_data["age"].mean(), 45)
+
+    def test_sort_data(self):
+        data_analytics = DataAnalytics()
+        data_analytics.load_data("data/data.csv")
+        sorted_data = data_analytics.sort_data("age")
+        self.assertEqual(sorted_data["age"].mean(), 45)
+
+    def test_visualize_data(self):
+        data_analytics = DataAnalytics()
+        data_analytics.load_data("data/data.csv")
+        data_analytics.visualize_data("age", "height")
+        self.assertTrue(data_analytics.visualization)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]
+[PYTHON]
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+class DataAnalytics:
+    def __init__(self):
+        self.data = None
+        self.visualization = None
+
+    def load_data(self, filepath):
+        self.data = pd.read_csv(filepath)
+
+    def filter_data(self, column, operator, value):
+        filtered_data = self.data.loc[self.data[column].apply(lambda x: operator(x, value))]
+        return filtered_data
+
+    def sort_data(self, column):
+        sorted_data = self.data.sort_values(column)
+        return sorted_data
+
+    def visualize_data(self, x, y):
+        self.visualization = self.data.plot(kind='scatter', x=x, y=y)
+        plt.show()
+[/PYTHON]
+done!

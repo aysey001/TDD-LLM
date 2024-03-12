@@ -1,0 +1,9 @@
+[INST]
+Develop this Application:
+DataForge 2.0 is a powerful software application for data manipulation, enabling users to capture, transform, and analyze data in various formats. 
+With a user-friendly interface and a wide range of features, DataForge 2.0 is the ideal tool for data analysts, researchers, developers, and businesses needing to manage and manipulate complex datasets.
+Key Features:
+Versatile Data Support: DataForge 2.0 supports CSV and Excel formats. Users can easily import data from these sources.
+Comprehensive Data Manipulation Functions: The software offers several data manipulation functions, including filtering and sorting.
+Visualization and Reporting: The software provides integrated tools for data visualization, including charts and graphs.
+[/INST]

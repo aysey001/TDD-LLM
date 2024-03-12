@@ -54,7 +54,7 @@ def main():
     # chain the outline prompt with the language model
     outline_chain = outline_prompt | llm
     # invoke the chain with the input from the user
-    outline = outline_chain.invoke({"input": read_file("prompt//user_message.txt")} )
+    outline = outline_chain.invoke({"input": read_file("prompt//spaceship.txt")} )
     print(outline.content)
 
     # same for tests and code
@@ -69,9 +69,9 @@ def main():
     print(code.content)
 
     #check for correct tags and linting
-    tH = tagHandler(code.content)
-    lT = lintingTest(tH.remove_python_tags())
-    res = lT.run_lint()
+    tagHandler_code = tagHandler(code.content)
+    lintingTest_code = lintingTest(tagHandler_code.remove_python_tags())
+    res = lintingTest_code.run_lint()
     
     #repair code if necessary. max tries = 3
     repair_count = 1
@@ -84,6 +84,11 @@ def main():
         repair_chain = repair_prompt | llm
         repair = repair_chain.invoke({"input": code.content} )
         print(repair.content)
+        
+        tagHandler_repair = tagHandler(repair.content)
+        lintingTest_repair = lintingTest(tagHandler_repair.remove_python_tags())
+        res = lintingTest_repair.run_lint()
+
         repair_count += 1
     
     if res == False:

@@ -1,0 +1,389 @@
+[INST]
+Your task is to predict whether a passenger was transported to an alternate dimension during the Spaceship Titanic's collision with the spacetime anomaly. 
+To help you make these predictions, you're given a set of personal records recovered from the ship's damaged computer system.
+
+File and Data Field Descriptions
+
+train.csv - Personal records for about two-thirds (~8700) of the passengers, to be used as training data.
+PassengerId - A unique Id for each passenger. Each Id takes the form gggg_pp where gggg indicates a group the passenger is travelling with and pp is their number within the group. People in a group are often family members, but not always.
+HomePlanet - The planet the passenger departed from, typically their planet of permanent residence.
+CryoSleep - Indicates whether the passenger elected to be put into suspended animation for the duration of the voyage. Passengers in cryosleep are confined to their cabins.
+Cabin - The cabin number where the passenger is staying. Takes the form deck/num/side, where side can be either P for Port or S for Starboard.
+Destination - The planet the passenger will be debarking to.
+Age - The age of the passenger.
+VIP - Whether the passenger has paid for special VIP service during the voyage.
+RoomService, FoodCourt, ShoppingMall, Spa, VRDeck - Amount the passenger has billed at each of the Spaceship Titanic's many luxury amenities.
+Name - The first and last names of the passenger.
+Transported - Whether the passenger was transported to another dimension. This is the target, the column you are trying to predict.
+
+test.csv - Personal records for the remaining one-third (~4300) of the passengers, to be used as test data. Your task is to predict the value of Transported for the passengers in this set.
+sample_submission.csv - A submission file in the correct format.
+PassengerId - Id for each passenger in the test set.
+Transported - The target. For each passenger, predict either True or False.
+[/INST]
+---------------------------------------------------------LLM Response includes "Kaggle" without mention---------------------------------------------------------------------------------------------------------------
+[LIST]
+1. Load the data from train.csv and test.csv files using Pandas library's read_csv() method.
+2. Explore the data by using DataFrame.describe() and DataFrame.info() methods to understand the distribution of values and data types in each column.
+3. Check for missing values and handle them accordingly. You can use DataFrame.isna() method to check for missing values and DataFrame.fillna() method to replace them with a suitable value.
+4. Preprocess the data by handling outliers and scaling/normalizing the data using techniques like Min-Max Scaling and Standardization. You can use Scikit-Learn's StandardScaler() and MinMaxScaler() to perform these operations.
+5. Split the data into training and validation sets using train_test_split() function from Scikit-Learn library. You can use the parameters like test_size=0.2 and random_state=42 to split the data into 80% for training and 20% for validation.
+6. Train a machine learning model on the training data using techniques like Decision Trees, Random Forest, Support Vector Machines, Neural Networks, etc. You can use Scikit-Learn's DecisionTreeClassifier(), RandomForestClassifier(), SVC() and MLPClassifier() to train these models.
+7. Evaluate the performance of the trained model on the validation data using metrics like accuracy, precision, recall, F1-score, etc. You can use Scikit-Learn's accuracy_score(), precision_score(), recall_score(), f1_score(), etc. to calculate these metrics.
+8. Use the trained model to make predictions on the test set using DataFrame.apply() method. You can use DataFrame.apply() method to apply the model to each row in the test set and create a new column called Transported.
+9. Submit the predictions to the Kaggle platform using sample_submission.csv file. You can use Kaggle's submission API to submit the predictions.
+[/LIST]
+
+[TESTS]
+import unittest
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+
+class TestTransportationPredictor(unittest.TestCase):
+
+    def test_load_data(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        self.assertEqual(train_df.shape[0], 25000)
+        self.assertEqual(test_df.shape[0], 6121)
+        self.assertEqual(list(train_df.columns), ['PassengerId', 'Survived', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked'])
+        self.assertEqual(list(test_df.columns), ['PassengerId', 'Pclass', 'Name', 'Sex', 'Age', 'SibSp', 'Parch', 'Ticket', 'Fare', 'Cabin', 'Embarked'])
+
+    def test_explore_data(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        self.assertEqual(train_df['Survived'].value_counts().tolist(), [0, 1])
+        self.assertTrue(train_df['Age'].isna().any())
+        self.assertTrue(test_df['Age'].isna().any())
+        self.assertTrue(train_df['Cabin'].isna().any())
+        self.assertTrue(test_df['Cabin'].isna().any())
+        self.assertTrue(train_df['Embarked'].isna().any())
+        self.assertTrue(test_df['Embarked'].isna().any())
+        self.assertEqual(train_df['Embarked'].unique().tolist(), ['S', 'C', 'Q'])
+        self.assertEqual(test_df['Embarked'].unique().tolist(), ['S', 'C', 'Q'])
+        self.assertTrue(train_df['Pclass'].isna().any())
+        self.assertTrue(test_df['Pclass'].isna().any())
+        self.assertEqual(train_df['Pclass'].value_counts().tolist(), [3, 1])
+        self.assertEqual(test_df['Pclass'].value_counts().tolist(), [3, 1])
+        self.assertEqual(train_df['Sex'].value_counts().tolist(), ['female', 'male'])
+        self.assertEqual(test_df['Sex'].value_counts().tolist(), ['female', 'male'])
+        self.assertEqual(train_df['Survived'].value_counts().tolist(), [0, 1])
+        self.assertEqual(test_df['Survived'].value_counts().tolist(), [0, 1])
+        self.assertEqual(train_df['Ticket'].isna().any(), False)
+        self.assertEqual(test_df['Ticket'].isna().any(), False)
+        self.assertEqual(train_df['Name'].isna().any(), False)
+        self.assertEqual(test_df['Name'].isna().any(), False)
+
+    def test_handle_missing_values(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        train_df['Age'].fillna(train_df['Age'].mean(), inplace=True)
+        test_df['Age'].fillna(test_df['Age'].mean(), inplace=True)
+        train_df['Cabin'].fillna('U', inplace=True)
+        test_df['Cabin'].fillna('U', inplace=True)
+        train_df['Embarked'].fillna('U', inplace=True)
+        test_df['Embarked'].fillna('U', inplace=True)
+        self.assertEqual(train_df['Age'].isna().any(), False)
+        self.assertEqual(test_df['Age'].isna().any(), False)
+        self.assertEqual(train_df['Cabin'].isna().any(), False)
+        self.assertEqual(test_df['Cabin'].isna().any(), False)
+        self.assertEqual(train_df['Embarked'].isna().any(), False)
+        self.assertEqual(test_df['Embarked'].isna().any(), False)
+        self.assertEqual(train_df['Age'].mean(), 29.69911764705882)
+        self.assertEqual(test_df['Age'].mean(), 29.69911764705882)
+        self.assertEqual(train_df['Cabin'].value_counts().tolist(), ['U'])
+        self.assertEqual(test_df['Cabin'].value_counts().tolist(), ['U'])
+        self.assertEqual(train_df['Embarked'].value_counts().tolist(), ['U'])
+        self.assertEqual(test_df['Embarked'].value_counts().tolist(), ['U'])
+
+    def test_preprocess_data(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_val_scaled = scaler.transform(X_val)
+        self.assertEqual(X_train_scaled.mean(), 0)
+        self.assertEqual(X_train_scaled.var(), 1)
+        self.assertEqual(X_val_scaled.mean(), 0)
+        self.assertEqual(X_val_scaled.var(), 1)
+        min_max_scaler = MinMaxScaler()
+        X_train_scaled = min_max_scaler.fit_transform(X_train)
+        X_val_scaled = min_max_scaler.transform(X_val)
+        self.assertEqual(X_train_scaled.mean(), 0)
+        self.assertEqual(X_train_scaled.min(), 0)
+        self.assertEqual(X_train_scaled.max(), 1)
+        self.assertEqual(X_val_scaled.mean(), 0)
+        self.assertEqual(X_val_scaled.min(), 0)
+        self.assertEqual(X_val_scaled.max(), 1)
+
+    def test_train_model(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(X_train, y_train)
+        self.assertEqual(decision_tree.score(X_val, y_val), 0.8202564102564103)
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(X_train, y_train)
+        self.assertEqual(random_forest.score(X_val, y_val), 0.8183418341834183)
+        svm = SVC()
+        svm.fit(X_train, y_train)
+        self.assertEqual(svm.score(X_val, y_val), 0.8042857142857143)
+        mlp = MLPClassifier()
+        mlp.fit(X_train, y_train)
+        self.assertEqual(mlp.score(X_val, y_val), 0.796875)
+
+    def test_evaluate_model(self):
+        train_df = pd.read_csv('train.csv')
+        test_df = pd.read_csv('test.csv')
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(X_train, y_train)
+        self.assertEqual(accuracy_score(y_val, decision_tree.predict(X_val)), 0.8202564102564103)
+        self.assertEqual(precision_score(y_val, decision_tree.predict(X_val), pos_label=1), 0.8554794520547945)
+        self.assertEqual(recall_score(y_val, decision_tree.predict(X_val), pos_label=1), 0.8235294117647059)
+        self.assertEqual(f1_score(y_val, decision_tree.predict(X_val), pos_label=1), 0.8379310344827586)
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(X_train, y_train)
+        self.assertEqual(accuracy_score(y_val, random_forest.predict(X_val)), 0.8183418341834183)
+        self.assertEqual(precision_score(y_val, random_forest.predict(X_val), pos_label=1), 0.8533333333333334)
+        self.assertEqual(recall_score(y_val, random_forest.predict(X_val), pos_label=1), 0.8166666666666667)
+        self.assertEqual(f1_score(y_val, random_forest.predict(X_val), pos_label=1), 0.8270833333333334)
+        svm = SVC()
+        svm.fit(X_train, y_train)
+        self.assertEqual(accuracy_score(y_val, svm.predict(X_val)), 0.8042857142857143)
+        self.assertEqual(precision_score(y_val, svm.predict(X_val), pos_label=1), 0.8205128205128205)
+        self.assertEqual(recall_score(y_val, svm.predict(X_val), pos_label=1), 0.8027777777777778)
+        self.assertEqual(f1_score(y_val, svm.predict(X_val), pos_label=1), 0.8118645679012346)
+        mlp = MLPClassifier()
+        mlp.fit(X_train, y_train)
+        self.assertEqual(accuracy_score(y_val, mlp.predict(X_val)), 0.796875)
+        self.assertEqual(precision_score(y_val, mlp.predict(X_val), pos_label=1), 0.8175)
+        self.assertEqual(recall_score(y_val, mlp.predict(X_val), pos_label=1), 0.7908333333333334)
+        self.assertEqual(f1_score(y_val, mlp.predict(X_val), pos_label=1), 0.805625)
+
+    def test_make_predictions(self):
+        test_df = pd.read_csv('test.csv')
+        X = test_df.drop(['PassengerId'], axis=1)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(train_df.drop(['Survived'], axis=1), train_df['Survived'])
+        self.assertEqual(accuracy_score(test_df['Survived'], decision_tree.predict(X)), 0.7863962264150943)
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(train_df.drop(['Survived'], axis=1), train_df['Survived'])
+        self.assertEqual(accuracy_score(test_df['Survived'], random_forest.predict(X)), 0.7877777777777778)
+        svm = SVC()
+        svm.fit(train_df.drop(['Survived'], axis=1), train_df['Survived'])
+        self.assertEqual(accuracy_score(test_df['Survived'], svm.predict(X)), 0.7741935483870968)
+        mlp = MLPClassifier()
+        mlp.fit(train_df.drop(['Survived'], axis=1), train_df['Survived'])
+        self.assertEqual(accuracy_score(test_df['Survived'], mlp.predict(X)), 0.7725)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]
+[PYTHON]
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import warnings
+warnings.filterwarnings('ignore')
+
+class TransportationPredictor:
+    def __init__(self):
+        self.train_df = pd.read_csv('train.csv')
+        self.test_df = pd.read_csv('test.csv')
+
+    def load_data(self):
+        return self.train_df, self.test_df
+
+    def explore_data(self):
+        train_df = self.train_df
+        test_df = self.test_df
+        print("Train Data:")
+        print(train_df.shape)
+        print(train_df.head())
+        print("Test Data:")
+        print(test_df.shape)
+        print(test_df.head())
+        print("Columns:")
+        print(list(train_df.columns))
+        print(list(test_df.columns))
+        print("Datatypes:")
+        print(train_df.dtypes)
+        print(test_df.dtypes)
+        print("Missing Values:")
+        print(train_df.isnull().sum())
+        print(test_df.isnull().sum())
+        print("Value Counts:")
+        print(train_df['Survived'].value_counts())
+        print(test_df['Survived'].value_counts())
+        print(train_df['Embarked'].value_counts())
+        print(test_df['Embarked'].value_counts())
+        print(train_df['Pclass'].value_counts())
+        print(test_df['Pclass'].value_counts())
+        print(train_df['Sex'].value_counts())
+        print(test_df['Sex'].value_counts())
+        print("Describe:")
+        print(train_df['Age'].describe())
+        print(test_df['Age'].describe())
+        print("Correlation:")
+        print(train_df.corr())
+
+    def handle_missing_values(self):
+        train_df = self.train_df
+        test_df = self.test_df
+        train_df['Age'].fillna(train_df['Age'].mean(), inplace=True)
+        test_df['Age'].fillna(test_df['Age'].mean(), inplace=True)
+        train_df['Cabin'].fillna('U', inplace=True)
+        test_df['Cabin'].fillna('U', inplace=True)
+        train_df['Embarked'].fillna('U', inplace=True)
+        test_df['Embarked'].fillna('U', inplace=True)
+        print("Handled Missing Values:")
+        print(train_df['Age'].isna().any())
+        print(test_df['Age'].isna().any())
+        print(train_df['Cabin'].isna().any())
+        print(test_df['Cabin'].isna().any())
+        print(train_df['Embarked'].isna().any())
+        print(test_df['Embarked'].isna().any())
+        print(train_df['Age'].mean())
+        print(test_df['Age'].mean())
+        print(train_df['Cabin'].value_counts())
+        print(test_df['Cabin'].value_counts())
+        print(train_df['Embarked'].value_counts())
+        print(test_df['Embarked'].value_counts())
+
+    def preprocess_data(self):
+        train_df = self.train_df
+        test_df = self.test_df
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_val_scaled = scaler.transform(X_val)
+        print("StandardScaler:")
+        print(X_train_scaled.mean())
+        print(X_train_scaled.var())
+        print(X_val_scaled.mean())
+        print(X_val_scaled.var())
+        min_max_scaler = MinMaxScaler()
+        X_train_scaled = min_max_scaler.fit_transform(X_train)
+        X_val_scaled = min_max_scaler.transform(X_val)
+        print("MinMaxScaler:")
+        print(X_train_scaled.mean())
+        print(X_train_scaled.min())
+        print(X_train_scaled.max())
+        print(X_val_scaled.mean())
+        print(X_val_scaled.min())
+        print(X_val_scaled.max())
+
+    def train_model(self):
+        train_df = self.train_df
+        test_df = self.test_df
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(X_train, y_train)
+        print("Decision Tree:")
+        print(decision_tree.score(X_val, y_val))
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(X_train, y_train)
+        print("Random Forest:")
+        print(random_forest.score(X_val, y_val))
+        svm = SVC()
+        svm.fit(X_train, y_train)
+        print("SVM:")
+        print(svm.score(X_val, y_val))
+        mlp = MLPClassifier()
+        mlp.fit(X_train, y_train)
+        print("MLP:")
+        print(mlp.score(X_val, y_val))
+
+    def evaluate_model(self):
+        train_df = self.train_df
+        test_df = self.test_df
+        X = train_df.drop(['Survived'], axis=1)
+        y = train_df['Survived']
+        X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(X_train, y_train)
+        print("Decision Tree:")
+        print(accuracy_score(y_val, decision_tree.predict(X_val)))
+        print(precision_score(y_val, decision_tree.predict(X_val), pos_label=1))
+        print(recall_score(y_val, decision_tree.predict(X_val), pos_label=1))
+        print(f1_score(y_val, decision_tree.predict(X_val), pos_label=1))
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(X_train, y_train)
+        print("Random Forest:")
+        print(accuracy_score(y_val, random_forest.predict(X_val)))
+        print(precision_score(y_val, random_forest.predict(X_val), pos_label=1))
+        print(recall_score(y_val, random_forest.predict(X_val), pos_label=1))
+        print(f1_score(y_val, random_forest.predict(X_val), pos_label=1))
+        svm = SVC()
+        svm.fit(X_train, y_train)
+        print("SVM:")
+        print(accuracy_score(y_val, svm.predict(X_val)))
+        print(precision_score(y_val, svm.predict(X_val), pos_label=1))
+        print(recall_score(y_val, svm.predict(X_val), pos_label=1))
+        print(f1_score(y_val, svm.predict(X_val), pos_label=1))
+        mlp = MLPClassifier()
+        mlp.fit(X_train, y_train)
+        print("MLP:")
+        print(accuracy_score(y_val, mlp.predict(X_val)))
+        print(precision_score(y_val, mlp.predict(X_val), pos_label=1))
+        print(recall_score(y_val, mlp.predict(X_val), pos_label=1))
+        print(f1_score(y_val, mlp.predict(X_val), pos_label=1))
+
+    def make_predictions(self):
+        test_df = self.test_df
+        X = test_df.drop(['PassengerId'], axis=1)
+        decision_tree = DecisionTreeClassifier()
+        decision_tree.fit(self.train_df.drop(['Survived'], axis=1), self.train_df['Survived'])
+        print("Decision Tree:")
+        print(accuracy_score(test_df['Survived'], decision_tree.predict(X)))
+        random_forest = RandomForestClassifier(n_estimators=100)
+        random_forest.fit(self.train_df.drop(['Survived'], axis=1), self.train_df['Survived'])
+        print("Random Forest:")
+        print(accuracy_score(test_df['Survived'], random_forest.predict(X)))
+        svm = SVC()
+        svm.fit(self.train_df.drop(['Survived'], axis=1), self.train_df['Survived'])
+        print("SVM:")
+        print(accuracy_score(test_df['Survived'], svm.predict(X)))
+        mlp = MLPClassifier()
+        mlp.fit(self.train_df.drop(['Survived'], axis=1), self.train_df['Survived'])
+        print("MLP:")
+        print(accuracy_score(test_df['Survived'], mlp.predict(X)))
+
+if __name__ == '__main__':
+    transportation_predictor = TransportationPredictor()
+    transportation_predictor.load_data()
+    transportation_predictor.explore_data()
+    transportation_predictor.handle_missing_values()
+    transportation_predictor.preprocess_data()
+    transportation_predictor.train_model()
+    transportation_predictor.evaluate_model()
+    transportation_predictor.make_predictions()
+[/PYTHON]
