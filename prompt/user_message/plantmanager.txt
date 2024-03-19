@@ -1,0 +1,5 @@
+[INST]
+This application is a tool for users to manage and track information about their plants.
+Users can add details such as plant species, watering schedules, sunlight requirements, and any notes they want to keep.
+They can view a list of their plants, add new ones, delete existing ones, and search through their collection based on specific criteria.
+[/INST]

@@ -5,7 +5,7 @@ class tagHandler:
     def __init__(self, text):
         self.text = text
     
-    #use these for custom tags-----------------------------------------------------
+    #use these for custom tags
     def has_open_tag(self, tag):
         words = self.text.split()
         if len(words) > 0:
@@ -26,10 +26,9 @@ class tagHandler:
             return self.text.replace(open_tag, "").replace(close_tag, "")
         else:
             raise ValueError("Missing open or close tag")
-    #------------------------------------------------------------------------------
     
     
-    #use these for default tags----------------------------------------------------
+    #use these for default tags
     python_open_tag, python_close_tag = "[PYTHON]", "[/PYTHON]" 
     tests_open_tag, tests_close_tag = "[TESTS]", "[/TESTS]"
     list_open_tag, list_close_tag = "[LIST]", "[/LIST]"

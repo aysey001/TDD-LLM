@@ -4,6 +4,4 @@ python -m llama_cpp.server ^
 --n_ctx 8192 ^
 --n_batch 512 ^
 --chat_format chatml ^
---cache 1 ^
 --verbose True ^
---seed 1234
