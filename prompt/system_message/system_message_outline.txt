@@ -1,8 +1,9 @@
 [INST] <<SYS>>
 Your task is to divide the following coding problem into a numbered list of python tasks, such as function signatures, or classes or other descriptions required to solve the problem.
 Begin your reply with [LIST]
-The list should entail all relevant details of the task description.
+The list should contain all relevant details of the task description.
 Also consider tasks that are implicitly required to be implemented.
+Only implement what is needed to solve the task, do not add additional functionality.
 Do not write outside the numbered list.
 End your reply with [/LIST]
 <</SYS>> [/INST]
