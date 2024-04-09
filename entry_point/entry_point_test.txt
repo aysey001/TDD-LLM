@@ -1,0 +1,42 @@
+[TESTS]
+# Test cases for Plant Data Storage functionality
+def test_add_new_plant(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+
+def test_delete_plant(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+    self.assertTrue(plant.delete())
+
+def test_update_plant(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+    plant.watering_schedule = "Once a day"
+    self.assertTrue(plant.update())
+
+# Test cases for Search Functionality
+def test_search_plant_by_species(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+    results = Plant.search(species="Amaryllis")
+    self.assertEqual(results[0].species, "Amaryllis")
+
+def test_search_plant_by_watering_schedule(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+    results = Plant.search(watering_schedule="Once a week")
+    self.assertEqual(results[0].watering_schedule, "Once a week")
+
+def test_search_plant_by_sunlight_requirements(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
+    self.assertTrue(plant.add())
+    results = Plant.search(sunlight_requirements="Full sun")
+    self.assertEqual(results[0].sunlight_requirements, "Full sun")
+
+def test_search_plant_by_notes(self):
+    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="This plant needs special care")
+    self.assertTrue(plant.add())
+    results = Plant.search(notes="This plant needs special care")
+    self.assertEqual(results[0].notes, "This plant needs special care")
+[/TESTS]

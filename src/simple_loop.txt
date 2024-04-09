@@ -1,0 +1,34 @@
+## prepare
+# connect to llm
+# get style of prompt
+# get user_message
+# get prompts (outline, test, code, repair)
+
+## generate outline or supply outline
+# if entry_point == "new"
+    # generate outline from outline_prompt and user_message
+    # save outline to file 
+# else if entry_point == "outline" 
+    # read outline from file
+
+# if entry_point == "new"
+    # generate test from test_prompt and outline
+    # save test to file
+# else if entry_point == "test"
+    # read test from file
+
+# if entry_point == "new"
+    # generate code from code_prompt and test
+# else if entry_point == "code"    
+
+# run linting_test on code
+# while linting_test == false and attempts > 3
+    # generate repair from code
+    # save repair to file as repair_<attempt_number>.txt
+    # else print repair attempt failed
+    # advance attempts
+
+# if linting_test == true 
+    # save code to file as success_code.py
+# else 
+    # save code as failed_code.py

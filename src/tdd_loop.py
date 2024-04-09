@@ -51,11 +51,11 @@ def main():
     outline_list = split_string(outline_cleaned)
     for outline_element in outline_list:
         outline_element = "[INST]\n" + outline_element + "\n[/INST]"
-
+        print(outline_element)
 
     while(outline_list):
 
-        test = test_chain.invoke({"input": outline_list.pop()})
+        test = test_chain.invoke({"input": outline_list.pop(0)})
         test_increment = test.content
         print(test_increment)
         

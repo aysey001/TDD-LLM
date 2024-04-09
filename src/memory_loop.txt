@@ -1,0 +1,39 @@
+## prepare
+# connect to llm
+# get style of prompt
+# get user_message
+# get prompts (outline, test, code, repair)
+
+## generate outline or supply outline
+# if custom_outline == False
+    # generate outline from outline_prompt and user_message
+    # clean outline tags
+    # split outline into outline_list
+# else read outline from file
+
+## main loop
+# loop through outline_list each element is outline_increment
+    # save outline_increment to file as outline_increment_<increment_number>.txt
+    # add tags to outline_increment
+    
+    # generate test_increment from test_prompt and test_memory for outline_increment
+    # save test_increment to file as test_increment_<increment_number>.txt
+    
+    # generate code_increment from code_prompt and code_memory for test_increment
+    # save code_increment to file as code_increment_<incremnt_number>.txt
+   
+    # remove test tags from test_increment
+    # remove code tags from code_increment
+    
+    # run linting_test on code_increment
+    # if linting_test fails, generate repair_increment from code_increment until linting_test passes
+    # save repair_increment to file as repair_increment_<increment_number>_<attempt_number>.txt
+        # if linting_test passes, set code_increment to repair_increment
+        # else print repair attempt failed
+        # stop after 3 attempts
+
+    # add code_increment to code_memory
+    # add test_increment to test_memory
+
+# save code_memory to file
+# save test_memory to file

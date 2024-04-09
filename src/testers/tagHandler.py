@@ -22,6 +22,7 @@ class tagHandler:
     
     #will remove the tags, but leave the newline
     def remove_tags(self, open_tag,close_tag):
+        self.text.replace("<|im_start|>user\n", "")
         if self.has_open_tag(open_tag) and self.has_close_tag(close_tag):
             return self.text.replace(open_tag, "").replace(close_tag, "")
         else:
