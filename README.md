@@ -28,7 +28,7 @@ git clone https://github.com/aysey001/TDD-LLM.git
 ```
 \bin\server_7b.bat
 ```
-* run llmchain_method.py
+* run tdd-llm.py
 ```
 python \src\llmchain_method.py
 ```
