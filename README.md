@@ -21,18 +21,22 @@ Clone the Repository: You can clone the repository using Git by running the foll
 ```bash
 git clone https://github.com/aysey001/TDD-LLM.git
 ```
-### Executing program
+### Executing Program
 
 * Modify the user_message.txt, insert custom prompt
 * start llm inference server
 ```
 \bin\server_7b.bat
 ```
-* run llmchain_method.py
+* run simple_loop.py
 ```
-python \src\llmchain_method.py
+python \src\simple_loop.py
 ```
 
+## Current Features
+* Entry/Exit at any stage
+* Supply custom prompt at any Stage
+* Select application type (currently supports Flask-Application and Console Application)
 
 
 ## Authors
