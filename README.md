@@ -58,13 +58,13 @@ else
     save code as failed
 
 #repair
-while linting_test == false and attempts > 3
+while linting_result == false and attempts > 3
     generate repair from code
     save repair to file as repair_<attempt_number>.txt
     else print repair attempt failed
     advance attempts
     run linting_test on repair
-    if linting_test == true 
+    if linting_result == true 
         save code to file as success
 if attempts == 4
     exit
