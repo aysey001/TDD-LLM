@@ -63,6 +63,7 @@ while linting_test == false and attempts > 3
     save repair to file as repair_<attempt_number>.txt
     else print repair attempt failed
     advance attempts
+    run linting_test on repair
     if linting_test == true 
         save code to file as success
 if attempts == 4
