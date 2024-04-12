@@ -6,6 +6,38 @@ Autonomous Software Development: A Pipeline for Test-Driven Development utilizin
 
 This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-Generation by simulating test-driven-development loops to generate a minimum-viable-product with no mandatory human intervention.
 
+### Core-Algorithm
+```
+# prepare
+connect to LLM-Service
+get prompts (outline, test, code, repair)
+get user_message
+
+# outline
+    generate outline from outline_prompt and user_message
+
+# test
+    generate test from test_prompt and outline
+
+# code
+    generate code from code_prompt and test
+
+# verify quality
+run linting_test on code
+if linting_result == true
+    exit(success)
+
+# repair
+while linting_result == false and attempts > 3
+    generate repair from code
+    advance attempts
+    run linting_test on repair
+    if linting_result == true 
+        exit(success)
+    if attempts == 4
+        exit(failed)
+```
+
 ### Architecture
 ![Design](tdd-llm-design.png)
 
