@@ -4,7 +4,7 @@ Autonomous Software Development: A Pipeline for Test-Driven Development utilizin
 
 ## Description
 
-This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-Generation by simulating test-driven-development loops to generate a minimum-viable-product with no mandatory human intervention.
+This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-Generation by simulating test-driven-development to generate a minimum-viable-product with no mandatory human intervention.
 
 ### Core-Algorithm
 ```
