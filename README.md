@@ -38,8 +38,10 @@ while linting_result == false and attempts > 3
         exit(failed)
 ```
 
-### Architecture
+### Design and Architecture
+![Architecture](Architecture.png)
 ![Design](tdd-llm-design.png)
+
 
 ### Pseudo-Code
 
