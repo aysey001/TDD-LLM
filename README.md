@@ -11,7 +11,7 @@ This is an implementation of a LangChain-Pipeline aiming to improve Python-Code-
 
 ### Pseudo-Code
 
-´´´
+```
 # prepare
 get style of prompt
 get entry_point
@@ -67,7 +67,7 @@ while linting_test == false and attempts > 3
         save code to file as success
 if attempts == 4
     exit
-´´´
+```
 
 ## Getting Started
 
