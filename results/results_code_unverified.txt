@@ -1,0 +1,177 @@
+[PYTHON]
+from flask import Flask, jsonify, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_mail import Mail, Message
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+from flask_migrate import Migrate
+from flask_debugtoolbar import DebugToolbarExtension
+from config import Config
+from project import models
+from project import views
+from project import errors
+
+# initialize flask extensions
+bootstrap = Bootstrap()
+mail = Mail()
+moment = Moment()
+db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()
+login_manager.login_view = "auth.login"
+login_manager.login_message = None
+login_manager.refresh_view = "auth.reauthenticate"
+debug_toolbar = DebugToolbarExtension()
+
+# create application factory
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    # initialize flask extensions
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    moment.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    debug_toolbar.init_app(app)
+
+    # register blueprints
+    app.register_blueprint(views.main)
+    app.register_blueprint(views.auth)
+    app.register_blueprint(views.errors)
+    app.register_blueprint(views.plants)
+
+    # configure login manager
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
+
+    # return application
+    return app
+
+# create app instance
+app = create_app()
+
+# handle http errors
+@app.errorhandler(404)
+def not_found(error):
+    return render_template("404.html"), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    db.session.rollback()
+    return render_template("500.html"), 500
+
+# handle email errors
+@mail.attachment_handler
+def attach_file(path):
+    return {
+        "filename": path.split("/")[-1],
+        "content": open(path, "rb").read(),
+    }
+
+@mail.mail_error_handler
+def handle_mail_error(error):
+    flash(f"An error occurred: {error}")
+
+# create database models
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    register_date = db.Column(db.DateTime)
+    last_login = db.Column(db.DateTime)
+    login_count = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
+    confirmed = db.Column(db.Boolean)
+    last_seen = db.Column(db.DateTime)
+    user_role = db.Column(db.String(64))
+    user_bio = db.Column(db.Text)
+    user_image = db.Column(db.String(64))
+    user_followers = db.relationship("User", secondary="followers", backref="followees", lazy="dynamic")
+    user_following = db.relationship("User", secondary="followees", backref="followers", lazy="dynamic")
+    user_plants = db.relationship("Plant", backref="user", lazy="dynamic")
+
+    def get_id(self):
+        return self.id
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+
+class Plant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    species = db.Column(db.String(64), unique=True, nullable=False)
+    schedule = db.Column(db.String(64), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    last_watered = db.Column(db.DateTime)
+    next_watering = db.Column(db.DateTime)
+    last_taken = db.Column(db.DateTime)
+    next_taking = db.Column(db.DateTime)
+    notes = db.Column(db.Text)
+    waterings = db.relationship("Watering", backref="plant", lazy="dynamic")
+    takings = db.relationship("Taking", backref="plant", lazy="dynamic")
+    alerts = db.relationship("Alert", backref="plant", lazy="dynamic")
+
+    def __repr__(self):
+        return f"<Plant {self.species}>"
+
+class Watering(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    unit = db.Column(db.String(32), nullable=False)
+    note = db.Column(db.Text)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    def __repr__(self):
+        return f"<Watering {self.date} {self.amount} {self.unit}>"
+
+class Taking(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    unit = db.Column(db.String(32), nullable=False)
+    note = db.Column(db.Text)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+    def __repr__(self):
+        return f"<Taking {self.date} {self.amount} {self.unit}>"
+
+class Alert(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
+    description = db.Column(db.Text)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    alert_type = db.Column(db.String(64), nullable=False)
+    alert_severity = db.Column(db.String(64), nullable=False)
+    resolved = db.Column(db.Boolean, default=False)
+    resolved_date = db.Column(db.DateTime)
+    resolved_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    resolved_note = db.Column(db.Text)
+    alerts = db.relationship("Alert", backref="plant", lazy="dynamic")
+
+    def __repr__(self):
+        return f"<Alert {self.date} {self.description}>"
+
+# create database schema
+db.create_all()
+
+# seed database
+if len(User.query.all()) == 0:
+    admin = User(
+        username="admin",
+        email="admin@example.com",
+        password="password",
+        confirmed=True,
+        active=True,
+    )
+    db.session.add(admin)
+    db.session.commit()
+[/PYTHON]

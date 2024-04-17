@@ -1,0 +1,28 @@
+# prepare
+connect to LLM-Service
+get prompts (outline, test, code, repair)
+get user_message
+
+# outline
+    generate outline from outline_prompt and user_message
+
+# test
+    generate test from test_prompt and outline
+
+# code
+    generate code from code_prompt and test
+
+# verify quality
+run linting_test on code
+if linting_result == true
+    exit(success)
+
+# repair
+while linting_result == false and attempts > 3
+    generate repair from code
+    advance attempts
+    run linting_test on repair
+    if linting_result == true 
+        exit(success)
+    if attempts == 4
+        exit(failed)

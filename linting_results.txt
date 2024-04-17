@@ -1,0 +1,6 @@
+************* Module tmpnlkk0pc3
+C:\Users\seyhan\AppData\Local\Temp\tmpnlkk0pc3:78:4: E0602: Undefined variable 'flash' (undefined-variable)
+
+-----------------------------------
+Your code has been rated at 9.60/10
+

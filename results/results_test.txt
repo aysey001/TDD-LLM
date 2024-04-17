@@ -1,0 +1,165 @@
+[TESTS]
+import os
+import json
+import requests
+import time
+from pathlib import Path
+from http import HTTPStatus
+from project.app import app, db
+from project.models import User, Plant
+from project.utils import get_random_string
+from flask import url_for
+from flask.testing import FlaskClient
+from sqlalchemy.exc import IntegrityError
+from .utils import login
+
+# test client
+client = app.test_client()
+
+# test database url
+TEST_DB = "test.db"
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASE = BASE_DIR.joinpath(TEST_DB)
+app.config["DATABASE"] = DATABASE
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DATABASE}"
+
+# helper functions
+def login(client, username, password):
+    return client.post(
+        url_for("auth.login"),
+        data=dict(username=username, password=password),
+        follow_redirects=True,
+    )
+
+
+def logout(client):
+    return client.get(url_for("auth.logout"), follow_redirects=True)
+
+
+def create_user(client, username, password):
+    return client.post(
+        url_for("auth.register"),
+        data=dict(username=username, password=password),
+        follow_redirects=True,
+    )
+
+
+def create_plant(client, user, species, schedule):
+    return client.post(
+        url_for("plants.add"),
+        data=dict(species=species, schedule=schedule),
+        follow_redirects=True,
+    )
+
+
+def edit_plant(client, user, plant_id, species=None, schedule=None):
+    return client.post(
+        url_for("plants.edit", plant_id=plant_id),
+        data=dict(species=species, schedule=schedule),
+        follow_redirects=True,
+    )
+
+
+def delete_plant(client, user, plant_id):
+    return client.get(url_for("plants.delete", plant_id=plant_id), follow_redirects=True)
+
+
+def get_plants(client, user):
+    return client.get(url_for("plants.index"), follow_redirects=True)
+
+
+def get_plant(client, user, plant_id):
+    return client.get(url_for("plants.view", plant_id=plant_id), follow_redirects=True)
+
+
+def get_plant_by_species(client, user, species):
+    return client.get(url_for("plants.search", species=species), follow_redirects=True)
+
+
+def get_plant_by_schedule(client, user, schedule):
+    return client.get(url_for("plants.search", schedule=schedule), follow_redirects=True)
+
+
+def get_plant_by_species_and_schedule(client, user, species, schedule):
+    return client.get(
+        url_for("plants.search", species=species, schedule=schedule), follow_redirects=True
+    )
+
+
+def test_plants():
+    # create a user and login
+    username = get_random_string(10)
+    password = get_random_string(10)
+    user = create_user(client, username, password)
+    login(client, username, password)
+
+    # create a plant
+    species = get_random_string(10)
+    schedule = get_random_string(10)
+    plant = create_plant(client, user, species, schedule)
+    assert plant.status_code == HTTPStatus.FOUND
+    assert plant.headers["Location"] == url_for("plants.index", _external=True)
+    plant = Plant.query.filter_by(species=species).first()
+    assert plant.species == species
+    assert plant.schedule == schedule
+    assert plant.user == user
+
+    # edit plant
+    species = get_random_string(10)
+    schedule = get_random_string(10)
+    plant = edit_plant(client, user, plant.id, species=species, schedule=schedule)
+    assert plant.status_code == HTTPStatus.FOUND
+    assert plant.headers["Location"] == url_for("plants.index", _external=True)
+    plant = Plant.query.filter_by(species=species).first()
+    assert plant.species == species
+    assert plant.schedule == schedule
+    assert plant.user == user
+
+    # delete plant
+    plant = delete_plant(client, user, plant.id)
+    assert plant.status_code == HTTPStatus.FOUND
+    assert plant.headers["Location"] == url_for("plants.index", _external=True)
+    plant = Plant.query.filter_by(species=species).first()
+    assert plant == None
+
+    # get plants
+    plants = get_plants(client, user)
+    assert plants.status_code == HTTPStatus.OK
+    assert plants.data == b"<h1>Plant List</h1>\n<table><tr><th>ID</th><th>Species</th><th>Schedule</th></tr><tr><td>" + plant.id.to_bytes(
+        16, "big"
+    ).hex() + "</td><td>" + plant.species.encode("utf-8") + "</td><td>" + plant.schedule.encode("utf-8") + "</td></tr></table>"
+
+    # get plant
+    plant = get_plant(client, user, plant.id)
+    assert plant.status_code == HTTPStatus.OK
+    assert plant.data == b"<h1>Plant</h1>\n<h2>" + plant.id.to_bytes(16, "big").hex() + "</h2>\n<h3>" + plant.species.encode("utf-8") + "</h3>\n<p>" + plant.schedule.encode("utf-8") + "</p>"
+
+    # get plant by species
+    plants = get_plant_by_species(client, user, species)
+    assert plants.status_code == HTTPStatus.OK
+    assert plants.data == b"<h1>Plant List</h1>\n<table><tr><th>ID</th><th>Species</th><th>Schedule</th></tr><tr><td>" + plant.id.to_bytes(
+        16, "big"
+    ).hex() + "</td><td>" + plant.species.encode("utf-8") + "</td><td>" + plant.schedule.encode("utf-8") + "</td></tr></table>"
+
+    # get plant by schedule
+    plants = get_plant_by_schedule(client, user, schedule)
+    assert plants.status_code == HTTPStatus.OK
+    assert plants.data == b"<h1>Plant List</h1>\n<table><tr><th>ID</th><th>Species</th><th>Schedule</th></tr><tr><td>" + plant.id.to_bytes(
+        16, "big"
+    ).hex() + "</td><td>" + plant.species.encode("utf-8") + "</td><td>" + plant.schedule.encode("utf-8") + "</td></tr></table>"
+
+    # get plant by species and schedule
+    plants = get_plant_by_species_and_schedule(client, user, species, schedule)
+    assert plants.status_code == HTTPStatus.OK
+    assert plants.data == b"<h1>Plant List</h1>\n<table><tr><th>ID</th><th>Species</th><th>Schedule</th></tr><tr><td>" + plant.id.to_bytes(
+        16, "big"
+    ).hex() + "</td><td>" + plant.species.encode("utf-8") + "</td><td>" + plant.schedule.encode("utf-8") + "</td></tr></table>"
+
+    # logout
+    logout(client)
+
+    # delete user
+    user = User.query.filter_by(username=username).first()
+    user.delete()
+    assert user == None
+[/TESTS]

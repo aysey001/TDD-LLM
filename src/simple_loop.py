@@ -11,7 +11,7 @@ from testers.fileaccess import read_file, write_file
 
 ## prepare
 # settings
-entry_point = ""
+entry_point = "new"
 stop_point = ""
 example_type = "flaskr"
 # connect to llm
@@ -30,7 +30,7 @@ repair_chain = repair_prompt | llm
 
 
 # invoke the outline chain with the input from the user or get outline from file
-if entry_point == "new" or entry_point == "":
+if entry_point == "new":
     # get user_message
     user_message_path = "prompt//user_message//plantmanager.txt"
     user_message = read_file(user_message_path)
@@ -69,8 +69,8 @@ if entry_point == "new" or entry_point == "outline" or entry_point == "test":
     print ("generating code...")
     code = code_chain.invoke({"input": test_message})
     code_message = code.content
-    write_file("results//results_code_unchanged.txt", code_message)
-    print("code generated under results/results_code_unchanged!")
+    write_file("results//results_code_unverified.txt", code_message)
+    print("code generated under results/results_code_unverified!")
 elif entry_point == "code":
     code_message = read_file("entry_point//entry_point_code.txt")
     print("code has been read from entry_point/entry_point_code")
@@ -83,29 +83,33 @@ if stop_point == "code":
 # remove tags, lint the code and write to file if successful
 tagless_code = tagHandler(code_message).remove_python_tags()
 linting_result = lintingTest(tagless_code).run_lint()
-if linting_result == False:
-    print("linting failed")
-else:
+if linting_result == True:
     print("code linted successfully")
-    write_file("results//results_code_linted.txt", code_message)
+    write_file("results//results_code_success.txt", code_message)
+    sys.exit()
+else:
+    print("linting failed")
+    write_file("results//results_code_lint_failed.txt", code_message)
 
-# if linting failed, attempt to repair the code
+# while linting fails, attempt to repair the code
 attempts = 1
 while linting_result == False and attempts <= 3:
     
     # invoke the repair chain with the code
-    print("attempting to repair code... " + attempts + "/3 attempts")
+    print("attempting to repair code... " + str(attempts) + "/3 attempts")
     repair = repair_chain.invoke({"input": code_message})
     repair_message = repair.content
-    write_file("results//results_code_repaired_"+attempts+".txt", repair_message)
+    write_file("results//results_code_repair_"+ str(attempts) +".txt", repair_message)
     # remove tags, lint the repaired code and write to file if successful
     tagless_repair = tagHandler(repair_message).remove_python_tags()
     linting_result = lintingTest(tagless_repair).run_lint()
-    if linting_result == False:
-        attempts += 1
-    else:
+    # if linting is successful, write to file and exit
+    if linting_result == True:
         print("repaired code linted successfully")
-        write_file("results//results_code_linted.txt", repair_message)
+        write_file("results//results_code_success.txt", repair_message)
+        sys.exit()
+    else:
+        attempts += 1
 
 if attempts == 4:
     print("repair failed after 3 attempts")
