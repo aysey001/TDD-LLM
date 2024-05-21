@@ -1,11 +1,11 @@
 from langchain_openai import ChatOpenAI
 import sys
 
-from testers.lintingTest import lintingTest
-from testers.tagHandler import tagHandler
-from testers.listdivider import split_string
-from testers.promptbuilder import get_prompt
-from testers.fileaccess import read_file, write_file
+from prompthandle.lintingTest import lintingTest
+from prompthandle.tagHandler import tagHandler
+from prompthandle.listdivider import split_string
+from prompthandle.promptbuilder import get_prompt
+from prompthandle.fileaccess import read_file, write_file
 
 from langchain.prompts import (ChatPromptTemplate)
 
@@ -40,7 +40,7 @@ def split_test():
     outline_with_tags = read_file("test.txt")
     outline_without_tags = tagHandler(outline_with_tags).remove_list_tags()
     #print(outline_without_tags) works
-    outline_list = split_string(outline_without_tags)
+    outline_list=""# = split_string(outline_without_tags)
     while(outline_list):
         
         outline_increment=outline_list.pop(0)

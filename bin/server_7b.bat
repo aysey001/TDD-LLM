@@ -5,4 +5,4 @@ python -m llama_cpp.server ^
 --n_batch 512 ^
 --chat_format chatml ^
 --verbose True ^
---cache True
+--cache False

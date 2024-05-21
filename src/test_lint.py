@@ -1,5 +1,4 @@
-from testers.lintingTest import lintingTest
-
+from prompthandle.lintingTest import lintingTest
 
 def main():
     text = """

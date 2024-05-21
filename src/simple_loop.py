@@ -1,19 +1,19 @@
 from langchain_openai import ChatOpenAI
 import sys
 
-from testers.lintingTest import lintingTest
-from testers.tagHandler import tagHandler
-from testers.listdivider import split_string
-from testers.promptbuilder import get_prompt
-from testers.fileaccess import read_file, write_file
+from prompthandle.lintingTest import lintingTest
+from prompthandle.tagHandler import tagHandler
+from prompthandle.promptbuilder import get_prompt
+from prompthandle.fileaccess import read_file, write_file
 
 
 
 ## prepare
 # settings
-entry_point = "new"
-stop_point = ""
+entry_point = "test"
+stop_point = "code"
 example_type = "flaskr"
+user_message_path = "prompt//user_message//ocpl.txt"
 # connect to llm
 llm = ChatOpenAI(openai_api_key="not needed", openai_api_base="http://localhost:8000/v1")
 
@@ -32,7 +32,6 @@ repair_chain = repair_prompt | llm
 # invoke the outline chain with the input from the user or get outline from file
 if entry_point == "new":
     # get user_message
-    user_message_path = "prompt//user_message//plantmanager.txt"
     user_message = read_file(user_message_path)
     print("generating outline...")
     outline = outline_chain.invoke({"input": user_message} )

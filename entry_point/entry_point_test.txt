@@ -1,42 +1,61 @@
 [TESTS]
-# Test cases for Plant Data Storage functionality
-def test_add_new_plant(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
+import unittest
+import os
+import tempfile
+import json
+import question  # Import the Flask app
 
-def test_delete_plant(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
-    self.assertTrue(plant.delete())
 
-def test_update_plant(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
-    plant.watering_schedule = "Once a day"
-    self.assertTrue(plant.update())
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = question.app.test_client()
+        self.temp_db_fd, question.app.config['DATABASE'] = tempfile.mkstemp()
+        question.app.config['TESTING'] = True
+        self.questions = [
+            {'title': 'What is your name?', 'description': '', 'answers': ['My name is Flask', 'My name is Python']},
+            {'title': 'What is your favorite language?', 'description': '', 'answers': ['My favorite language is Python', 'My favorite language is Flask']}
+        ]
+        with open(question.app.config['DATABASE'], 'w') as f:
+            json.dump(self.questions, f)
 
-# Test cases for Search Functionality
-def test_search_plant_by_species(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
-    results = Plant.search(species="Amaryllis")
-    self.assertEqual(results[0].species, "Amaryllis")
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(question.app.config['DATABASE'])
 
-def test_search_plant_by_watering_schedule(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
-    results = Plant.search(watering_schedule="Once a week")
-    self.assertEqual(results[0].watering_schedule, "Once a week")
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(question.app.config['DATABASE'], 'r')) as mock_open:
+            question.load_data()
+            mock_open.assert_called_once_with('questions.json', 'r')
+            self.assertEqual(question.questions, self.questions)
 
-def test_search_plant_by_sunlight_requirements(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="")
-    self.assertTrue(plant.add())
-    results = Plant.search(sunlight_requirements="Full sun")
-    self.assertEqual(results[0].sunlight_requirements, "Full sun")
+    def test_load_data_no_file(self):
+        os.unlink(question.app.config['DATABASE'])
+        question.load_data()
+        self.assertEqual(question.questions, [])
 
-def test_search_plant_by_notes(self):
-    plant = Plant(species="Amaryllis", watering_schedule="Once a week", sunlight_requirements="Full sun", notes="This plant needs special care")
-    self.assertTrue(plant.add())
-    results = Plant.search(notes="This plant needs special care")
-    self.assertEqual(results[0].notes, "This plant needs special care")
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_question(self):
+        response = self.app.get('/question/0')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_question(self):
+        new_question = {
+            'title': 'What is your favorite framework?',
+            'description': '',
+            'answers': ['My favorite framework is Flask', 'My favorite framework is Django']
+        }
+        response = self.app.post('/add_question', data=new_question, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(new_question, question.questions)
+
+    def test_select_answer(self):
+        response = self.app.get('/select_answer/0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(self.questions[0], question.questions)
+
+if __name__ == '__main__':
+    unittest.main()
 [/TESTS]

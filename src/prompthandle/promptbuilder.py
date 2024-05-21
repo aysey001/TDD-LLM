@@ -3,7 +3,7 @@ from langchain.prompts import (
     FewShotChatMessagePromptTemplate,
 )
 
-from testers.fileaccess import read_file
+from prompthandle.fileaccess import read_file
 
 #builds the prompt from the files in the prompt folder, leaves final input empty for chaining.
 def get_prompt(type:str,stage:str):

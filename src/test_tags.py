@@ -1,4 +1,4 @@
-from testers.tagHandler import tagHandler
+from prompthandle.tagHandler import tagHandler
 def main():
     text = """[PYTHON]
 import pylint.lint
