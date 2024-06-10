@@ -1,0 +1,61 @@
+[PYTHON]
+import math
+
+class BasicMathOperation:
+    def get_inputs(self):
+        num1 = int(input("Enter first number: "))
+        num2 = int(input("Enter second number: "))
+        return num1, num2
+
+    def apply_operation(self, num1, num2):
+        operation = self.ask_operation()
+        if operation == "+":
+            return num1 + num2
+        elif operation == "-":
+            return num1 - num2
+        elif operation == "*":
+            return num1 * num2
+        elif operation == "/":
+            return num1 / num2
+        else:
+            raise ValueError("Invalid operation")
+
+    def ask_operation(self):
+        print("Select operation:")
+        print("1. Addition")
+        print("2. Subtraction")
+        print("3. Multiplication")
+        print("4. Division")
+        choice = input("Enter your choice (1-4): ")
+        if choice == "1":
+            return "+"
+        elif choice == "2":
+            return "-"
+        elif choice == "3":
+            return "*"
+        elif choice == "4":
+            return "/"
+        else:
+            raise ValueError("Invalid choice")
+
+    def check_result(self, num1, num2, operation):
+        result = self.apply_operation(num1, num2)
+        print(f"{num1} {operation} {num2} = {result}")
+        print(f"Is {result} correct? (y/n): ")
+        choice = input()
+        if choice == "y":
+            return True
+        elif choice == "n":
+            return False
+        else:
+            raise ValueError("Invalid choice")
+
+if __name__ == '__main__':
+    basic_math_operation = BasicMathOperation()
+    num1, num2 = basic_math_operation.get_inputs()
+    result = basic_math_operation.check_result(num1, num2, basic_math_operation.apply_operation(num1, num2))
+    if result:
+        print("Great job! You are correct.")
+    else:
+        print("Sorry, you are incorrect.")
+[/PYTHON]

@@ -1,0 +1,7 @@
+[LIST]
+1. get_inputs() # save the two numbers input by the user and return them
+2. apply_operation() # apply a random basic math operation to the two numbers and return the result
+3. ask_operation() # ask the user which operation was applied and return the answer
+4. check_result() # check if the user's answer is correct and return True if it is correct and False if it is not correct
+5. main() # use get_inputs() and apply_operation() to get two numbers and apply an operation, ask_operation() to ask the user which operation was applied, check_result() to check if the user's answer is correct and print out the result
+[/LIST]

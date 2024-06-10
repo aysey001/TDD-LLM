@@ -1,0 +1,9 @@
+[INST]
+This is a game. Its called "Chaos Calculator".
+The player inputs 2 different numbers.
+The calculator applies a random basic mathematic operation.
+The player has to guess, which operation has been performed.
+The player has 2 tries to get it right. 
+If the player wins the score increases and the game keeps going with new numbers.
+If he loses times in a row, display a game over.
+[/INST]

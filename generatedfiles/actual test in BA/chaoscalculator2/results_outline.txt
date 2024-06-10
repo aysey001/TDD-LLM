@@ -1,0 +1,31 @@
+[LIST]
+1. Define the game variables and constants:
+	* Operation types: addition, subtraction, multiplication, division
+	* Number of tries per game: 2
+	* Score increase: 10 points
+	* Game over message: "Game over! Your score was {score}."
+2. Implement the game logic:
+	* Generate two random numbers between 0 and 100.
+	* Display the numbers and the possible operations (e.g. "What's 42 + 27?").
+	* Take in the player's guess and compare it with the actual result.
+	* If the player wins, display "Correct!" and increase the score by 10 points.
+	* If the player loses, display "Wrong!" and end the game with the current score.
+	* If the player has 2 tries left, continue the game with new numbers and possible operations.
+	* If the player has 1 try left, end the game with the current score and display "Game over!"
+3. Implement the user interface:
+	* Use a console-based interface to display the game instructions and prompt for player input.
+	* Use a random module to generate random numbers and operations.
+	* Use a loop to run the game until the player wins or loses all tries.
+4. Test and refine the game:
+	* Test the game with different inputs and outputs to ensure it works correctly.
+	* Refine the game logic and user interface as needed to improve user experience and gameplay.
+5. Deploy and play the game:
+	* Deploy the game in a way that allows users to play it from the command line or a web interface.
+	* Allow users to save their high scores and compare them with others.
+6. Continuously improve and refine the game:
+	* Continuously test and refine the game logic and user interface based on user feedback and new ideas.
+	* Consider adding new features and game modes, such as multiplayer or time-limited games.
+7. Document and share the game:
+	* Document the game's design, logic, and user interface to help others understand how it works and how they can improve it.
+	* Share the game with others and encourage them to play and provide feedback.
+[/LIST]

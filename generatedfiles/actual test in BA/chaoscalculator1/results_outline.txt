@@ -1,0 +1,7 @@
+[LIST]
+1. get_inputs() # save the two user inputs into variables and returns them in a tuple
+2. apply_operation() # apply a random basic math operation from a list of available operations and returns the result
+3. check_guess() # takes in a guess and compares it to the result of apply_operation(). If correct, return True else return False
+4. print_result() # prints the result of apply_operation() and takes in a boolean indicating if guess was correct
+5. main() # use get_inputs() to get the inputs, apply_operation() to apply the operation and check_guess() to check if guess was correct. If correct print_result() with True else print_result() with False and increment the score. If score reaches 3 game over else continue with new numbers and game loop.
+[/LIST]

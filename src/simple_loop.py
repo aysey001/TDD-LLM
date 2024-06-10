@@ -13,7 +13,7 @@ from prompthandle.fileaccess import read_file, write_file
 entry_point = "new"
 stop_point = ""
 example_type = "console_app"
-user_message_path = "prompt//user_message//logfileanalyzer.txt"
+user_message_path = "prompt//user_message//chaoscalculator.txt"
 # connect to llm
 llm = ChatOpenAI(openai_api_key="not needed", openai_api_base="http://localhost:8000/v1")
 

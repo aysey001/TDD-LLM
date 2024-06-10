@@ -1,0 +1,49 @@
+[TESTS]
+import unittest
+from CalculatorGame import get_inputs, apply_operation, check_guess, print_result, main
+
+class TestCalculatorGame(unittest.TestCase):
+
+    def test_get_inputs(self):
+        num1, num2 = get_inputs()
+        self.assertIsInstance(num1, int)
+        self.assertIsInstance(num2, int)
+        self.assertGreater(num1, num2)
+
+    def test_apply_operation(self):
+        operation = "+"
+        num1, num2 = get_inputs()
+        result = apply_operation(num1, num2, operation)
+        self.assertEqual(result, num1 + num2)
+
+    def test_check_guess(self):
+        operation = "+"
+        num1, num2 = get_inputs()
+        guess = num1 + num2
+        result = check_guess(guess, operation)
+        self.assertTrue(result)
+
+    def test_print_result(self):
+        operation = "+"
+        num1, num2 = get_inputs()
+        guess = num1 + num2
+        result = print_result(guess, operation)
+        self.assertIn("Correct!", result)
+
+    def test_main(self):
+        score = 0
+        while score < 3:
+            num1, num2 = get_inputs()
+            operation = "+"
+            guess = num1 + num2
+            result = main(num1, num2, operation, guess)
+            if result:
+                self.assertIn("Correct!", result)
+                score += 1
+            else:
+                self.assertIn("Incorrect", result)
+        self.assertEqual(score, 3)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

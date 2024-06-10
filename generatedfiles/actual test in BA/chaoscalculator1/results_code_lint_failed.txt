@@ -1,0 +1,49 @@
+[PYTHON]
+def get_inputs():
+    num1 = int(input("Enter first number: "))
+    num2 = int(input("Enter second number: "))
+    return num1, num2
+
+def apply_operation(num1, num2, operation):
+    if operation == "+":
+        result = num1 + num2
+    elif operation == "-":
+        result = num1 - num2
+    elif operation == "*":
+        result = num1 * num2
+    elif operation == "/":
+        result = num1 / num2
+    else:
+        raise ValueError("Invalid operation")
+    return result
+
+def check_guess(guess, operation):
+    num1, num2 = get_inputs()
+    if operation == "+":
+        if guess == num1 + num2:
+            return True
+    elif operation == "-":
+        if guess == num1 - num2:
+            return True
+    elif operation == "*":
+        if guess == num1 * num2:
+            return True
+    elif operation == "/":
+        if guess == num1 / num2:
+            return True
+    else:
+        raise ValueError("Invalid operation")
+    return False
+
+def print_result(guess, operation):
+    if guess == apply_operation(get_inputs(), operation):
+        result = "Correct!"
+    else:
+        result = "Incorrect"
+    return result
+
+def main(num1, num2, operation, guess):
+    result = check_guess(guess, operation)
+    print(print_result(guess, operation))
+    return result
+[/PYTHON]
