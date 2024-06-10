@@ -1,9 +1,14 @@
 [INST]
-Write a python webapplication. 
-Use the front page to display a list of questions just the title of a multiple-choice-question. 
-A button on the page leads to a page where you can add a multiple-choice-question.
-A multiple-choice-questions has: a title, a description and 4 seperate field for answers along corresponding booleans to mark which answer is true/false.
-Clicking on a multiple-choice-question opens a new page to display all its answers, along with buttons the user can press to select an answer. 
-if the user presses an answer a message with true/false is displayed.
+Write a webapplication in flask.
+The Purpose of the webapplication is a platform to create multiple-choice-questions and answer them.
+
+Each question consists of a title, description and also has a set of 4 possible options along with 4 corresponding booleans to mark the right answers.
 All questions should be saved to and loaded from a single json file with the approriate structure.
+
+The main page should display a summary of a question with just the title and discription.
+The main page should also have the option to add or delete any question.
+Every question should get its own page with the full details including the answers.
+If the user presses an answer a message with true/false is displayed.
 [/INST]
+
+

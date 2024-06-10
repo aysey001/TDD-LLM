@@ -1,0 +1,17 @@
+[INST]
+The Log File Analyzer is a console application designed to process and analyze web server log files. 
+It reads log files in common formats (e.g., Apache or Nginx), extracts useful information, and provides a summary report. 
+The tool helps system administrators and developers monitor web server performance, identify errors, and track user activity. 
+Features include reading log files, extracting data such as IP address, timestamp, request method, URL, status code, and 
+response time, and generating a summary report that counts total requests, identifies common request methods, lists the top 10 most requested URLs, 
+reports the number of requests per status code, and calculates average response time. The application also detects and counts error responses (e.g., 4xx and 5xx status codes) 
+and supports command-line arguments for specifying log file paths and optional filters.
+
+Example Log:
+192.168.1.1 - - [07/Jun/2024:12:45:23 +0000] "GET /index.html HTTP/1.1" 200 1024
+192.168.1.2 - - [07/Jun/2024:12:45:24 +0000] "POST /login HTTP/1.1" 302 512
+192.168.1.3 - - [07/Jun/2024:12:45:25 +0000] "GET /dashboard HTTP/1.1" 200 2048
+192.168.1.4 - - [07/Jun/2024:12:45:26 +0000] "GET /nonexistent HTTP/1.1" 404 256
+192.168.1.5 - - [07/Jun/2024:12:45:27 +0000] "GET /index.html HTTP/1.1" 200 1024
+192.168.1.1 - - [07/Jun/2024:12:45:28 +0000] "GET /profile HTTP/1.1" 500 128
+[/INST]

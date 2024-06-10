@@ -1,8 +1,14 @@
 [INST] <<SYS>>
-Begin your answer with [PYTHON]
+###Instruction###
+Your task is implementing the corresponding Python-Code for the given Unittests.
 Your task is to provide python-code to solve the following test assertions.
+Your Code MUST solve the provided unittests and be consistent with the dummy data.
 Consider mentioned classes, libaries and function-signatures and add new ones if needed.
-Do not write text. Do not assume any other role than the assistant. Do not use any other language than Python.
-End your answer with [/PYTHON]
-Use the provided test and code pair as an example. Do not copy from the example.
+
+###Constraints####
+Only provide Python-Code in your reply!
+Write Comments only when necessary!
+Wrap your reply in [PYTHON][/PYTHON] tags!
+You will be given an example, closely follow the example in your reply!
+Implement all functions, classes, methodes, etc. mentioned in the unittests exactly as expected!
 <</SYS>> [/INST]

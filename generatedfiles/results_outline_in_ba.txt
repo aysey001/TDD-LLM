@@ -1,0 +1,11 @@
+[LIST]
+1. Import Necessary Modules: Import Flask and its related modules such as `json` for data storage and `os` for file handling.
+2. Define Data Structure: Define a JSON data structure to store question information including title, description, options, and booleans for the right answers.
+3. Create App: Create a Flask app with a route for the home page (`/`) which displays a summary of all questions with titles and descriptions.
+4. Route for Adding and Deleting Questions: Create routes (`/add_question`) and (`/delete_question`) for adding and deleting questions respectively. This should display a form for adding questions and handle form submission. For deleting questions, display a confirmation message and handle the deletion process.
+5. Route for Single Question: Create a route (`/question/<question_id>`) for viewing a single question with its full details including options and booleans for the right answers.
+6. Route for Answering Questions: Create a route (`/answer/<question_id>/<option_id>`) for answering a question. Handle form submission and display a message with true/false for the correct answer.
+7. Save Data: Write functions to load and save question data to and from a JSON file.
+8. Main Function: Define a main function to run the Flask app.
+9. Testing: Test the app with different scenarios for adding, deleting, and answering questions.
+[/LIST]

@@ -1,0 +1,25 @@
+[LIST]
+1. Import necessary modules: `Flask`, `json`, and `os` for file handling.
+2. Initialize Flask app: Create a Flask app instance and set its config variables.
+3. Define data structure: Define a JSON data structure to store questions and their answers. Each question should have a title, description, and 4 options with their corresponding booleans.
+4. Define routes:
+	* `/`: Display a summary of all questions on the main page.
+	* `/add`: Add a new question page with a form to enter title, description, and options.
+	* `/delete`: Delete a question page with a form to select a question to delete.
+	* `/<question_id>`: Display the full details of a question and its answers.
+	* `/<question_id>/<answer_id>`: Display a message indicating whether an answer is correct (true/false).
+5. Define functions:
+	* `load_questions()`: Load questions from a JSON file and return a list of dictionaries containing question information.
+	* `save_questions(questions)`: Save questions to a JSON file from a list of dictionaries containing question information.
+	* `get_question(question_id)`: Return a dictionary containing information about a specific question by its ID.
+	* `get_answers(question_id)`: Return a list of dictionaries containing information about answers for a specific question by its ID.
+	* `add_question(question)`: Add a new question to the data structure and save it to the JSON file.
+	* `delete_question(question_id)`: Delete a question from the data structure and save it to the JSON file.
+	* `update_question(question)`: Update an existing question in the data structure and save it to the JSON file.
+	* `is_correct(answer)`: Return `True` if an answer is correct, `False` otherwise.
+6. Main function: Run the Flask app and define its behavior when users navigate through the application.
+7. Testing: Write unit tests for each function to ensure that they are working correctly and correctly handle edge cases.
+8. Deployment: Deploy the web application on a production server.
+9. Documentation: Provide documentation for each function and route in the application.
+10. Error handling: Handle errors and exceptions gracefully in the application.
+[/LIST]

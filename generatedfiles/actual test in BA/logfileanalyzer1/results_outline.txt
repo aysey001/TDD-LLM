@@ -1,0 +1,12 @@
+[LIST]
+1. Implement LogFileAnalyzer class with the following functions:
+* __init__() to initialize instance variables for log file path and filters (optional)
+* read_log() to read log file and extract data (IP address, timestamp, request method, URL, status code, and response time)
+* calculate_summary() to calculate summary statistics (total requests, common request methods, top 10 most requested URLs, response time per status code)
+* detect_errors() to detect and count error responses (e.g., 4xx and 5xx status codes)
+* print_summary() to print summary report
+2. Implement LogFileAnalyzerError class with error message and error code
+3. Implement LogFileAnalyzerArgumentParser class with command-line argument parsing functionality
+4. Implement main() function with argument parsing and error handling using LogFileAnalyzerError class
+5. Implement __main__() function to run main() function when script is executed
+[/LIST]

@@ -1,0 +1,11 @@
+[LIST]
+1. Create a Flask application instance.
+2. Define a simple JSON data structure to store plant information such as species, watering schedule, sunlight requirements, and notes.
+3. Create routes for the home page (`/`), viewing plants (`/plants`), adding plants (`/add_plant`), deleting plants (`/delete_plant/<plant_id>`), and searching plants (`/search`).
+4. Render plant details dynamically using Jinja2 templates for the viewing plants route.
+5. Collect plant details from the user via a form submission for the adding plants route. Handle form submission to add the plant to the data structure.
+6. Display a confirmation message for deleting plants and handle the deletion process.
+7. Search through the list of plants based on specific criteria such as species, watering schedule, or sunlight requirements for the searching plants route. Display matching plants.
+8. Write functions to load and save plant data to a JSON file.
+9. Define a main function to run the Flask application.
+[/LIST]

@@ -1,0 +1,13 @@
+[LIST]
+1. Import Necessary Modules: Import `Flask`, `json`, and `os` modules for web application framework and data storage and file handling respectively.
+2. Initialize Flask App: Create a Flask application instance and define its configuration.
+3. Define Data Structure: Define a JSON data structure for storing questions with title, description, options, and booleans for each question.
+4. Route for Home Page: Create a route for home page (`/`) which displays a summary of all questions and links to add/delete questions.
+5. Route for Viewing Questions: Create a route (`/questions`) to view all questions along with their titles and descriptions. Render this information dynamically using Jinja2 templates.
+6. Route for Adding Questions: Create a route (`/add_question`) to add a new question. Collect question details from the user via a form submission, including title, description, options, and booleans for each option. Handle form submission to add the question to the data structure.
+7. Route for Deleting Questions: Create a route (`/delete_question/<question_id>`) to delete a question. Display a confirmation message and handle the deletion process.
+8. Route for Viewing Question Details: Create a route (`/question/<question_id>`) to view details for a specific question including title, description, and options along with their corresponding booleans. Render this information dynamically using Jinja2 templates.
+9. Route for Submitting Answers: Create a route (`/submit_answer/<question_id>/<option_id>`) to submit an answer for a specific question and option. Handle the answer submission and display a message with true/false indicating if the answer is correct or not.
+10. Save Data: Write functions to load and save question data to a JSON file.
+11. Main Function: Define a main function to run the Flask application.
+[/LIST]

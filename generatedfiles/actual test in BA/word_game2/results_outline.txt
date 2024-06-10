@@ -1,0 +1,12 @@
+[LIST]
+1. get_sentences() # returns a list of sentences
+2. get_word_count() # returns the word count of the sentence
+3. print_sentence() # prints out the sentence with "*" instead of words
+4. guess_word() # prompts the user to enter a word and checks if its in the sentence
+5. check_word() # checks if the word is in the sentence and returns true if it is
+6. print_guessed_word() # prints out the word that was guessed
+7. print_hint() # prints out a hint for the user
+8. pass() # restores 1 Life-Point for the user
+9. lose_life() # subtracts 1 Life-Point for the user
+10. main() # calls all functions in order to play the game
+[/LIST]

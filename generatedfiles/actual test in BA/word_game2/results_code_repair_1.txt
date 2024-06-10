@@ -1,0 +1,72 @@
+[PYTHON]
+import random
+
+class HangmanGame:
+    def __init__(self):
+        self.sentences = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew", "jackfruit", "kiwi", "lemon", "mango", "nectarine", "orange", "plum", "pomegranate", "peach", "pineapple", "strawberry"]
+        self.word_count = len(self.sentences)
+        self.sentence = self.print_sentence()
+        self.lives = 6
+        self.guessed_words = []
+        self.hint = ""
+
+    def get_sentences(self):
+        return self.sentences
+
+    def get_word_count(self):
+        return self.word_count
+
+    def print_sentence(self):
+        sentence = random.choice(self.sentences)
+        word = "*" * len(sentence)
+        return word
+
+    def guess_word(self, word):
+        guessed = False
+        if word in self.sentences:
+            guessed = True
+            self.guessed_words.append(word)
+        return guessed
+
+    def check_word(self, word):
+        guessed = False
+        if word in self.guessed_words:
+            guessed = True
+        return guessed
+
+    def print_guessed_word(self, word):
+        self.guessed_words.append(word)
+        return self.guessed_words
+
+    def print_hint(self):
+        hint = ""
+        if len(self.guessed_words) > 0:
+            hint = self.guessed_words[-1][0].upper()
+        return hint
+
+    def pass(self):
+        self.lives -= 1
+        return self.lives
+
+    def lose_life(self):
+        self.lives -= 1
+        return self.lives
+
+    def main(self):
+        while self.lives > 0:
+            word = input("Guess a word: ")
+            if self.guess_word(word):
+                print("Word guessed correctly!")
+                break
+            else:
+                print("Word not guessed correctly!")
+                self.lose_life()
+        else:
+            print("You lost all your lives!")
+        print("Game Over!")
+        return self.lives
+
+if __name__ == '__main__':
+    game = HangmanGame()
+    game.main()
+[/PYTHON]

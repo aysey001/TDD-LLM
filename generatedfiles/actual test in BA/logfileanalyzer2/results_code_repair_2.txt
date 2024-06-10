@@ -1,0 +1,47 @@
+[PYTHON]
+import sys
+import argparse
+import datetime
+
+class LogParser:
+    def __init__(self, log_file):
+        self.log_file = log_file
+        self.log_data = []
+
+    def parse_log_file(self, log_file):
+        with open(log_file, "r") as log_fd:
+            log_content = log_fd.read()
+        log_entries = log_content.split("\n")
+        for log_entry in log_entries:
+            if log_entry:
+                log_data = self.extract_data(log_entry)
+                self.log_data.append(log_data)
+        return self.log_data
+
+    def extract_data(self, log_entry):
+        date, time, severity, message = log_entry.split(" - ")
+        log_data = {"date": date, "time": time, "severity": severity, "message": message}
+        return log_data
+
+    def generate_report(self, log_data):
+        report = ""
+        for log in log_data:
+            report += f"{log['date']} {log['time']} - {log['severity']} - {log['message']}\n"
+        return report
+
+    def main(args):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("log_file", help="log file to parse")
+        parser.add_argument("--date", help="filter by date")
+        args = parser.parse_args()
+        log_parser = LogParser(args.log_file)
+        log_data = log_parser.parse_log_file(args.log_file)
+        if args.date:
+            log_data = [log for log in log_data if log["date"] == args.date]
+        report = log_parser.generate_report(log_data)
+        print(report)
+        return log_data
+
+if __name__ == '__main__':
+    log_data = main(sys.argv[1:])
+[/PYTHON]

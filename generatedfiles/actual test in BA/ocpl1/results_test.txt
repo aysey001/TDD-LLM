@@ -1,0 +1,113 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import os
+import tempfile
+import json
+
+import question_answer  # Import the Flask app
+
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = question_answer.app.test_client()
+        self.temp_db_fd, question_answer.app.config['DATABASE'] = tempfile.mkstemp()
+        question_answer.app.config['TESTING'] = True
+        self.questions = [
+            {
+                'title': 'What is your favorite color?',
+                'description': 'Select all that apply',
+                'options': [
+                    {'text': 'Red', 'correct': True},
+                    {'text': 'Blue', 'correct': True},
+                    {'text': 'Green', 'correct': True},
+                    {'text': 'Yellow', 'correct': False},
+                ]
+            },
+            {
+                'title': 'What is your favorite animal?',
+                'description': 'Select all that apply',
+                'options': [
+                    {'text': 'Dog', 'correct': True},
+                    {'text': 'Cat', 'correct': True},
+                    {'text': 'Bird', 'correct': False},
+                    {'text': 'Fish', 'correct': False},
+                ]
+            }
+        ]
+        with open(question_answer.app.config['DATABASE'], 'w') as f:
+            json.dump(self.questions, f)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(question_answer.app.config['DATABASE'])
+
+    def test_load_questions(self):
+        with patch('builtins.open', return_value=open(question_answer.app.config['DATABASE'], 'r')) as mock_open:
+            questions = question_answer.load_questions()
+            mock_open.assert_called_once_with('questions.json', 'r')
+            self.assertEqual(questions, self.questions)
+
+    def test_load_questions_no_file(self):
+        os.unlink(question_answer.app.config['DATABASE'])
+        questions = question_answer.load_questions()
+        self.assertEqual(questions, [])
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add(self):
+        response = self.app.get('/add')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete(self):
+        response = self.app.get('/delete')
+        self.assertEqual(response.status_code, 200)
+
+    def test_question(self):
+        response = self.app.get('/0')
+        self.assertEqual(response.status_code, 200)
+
+    def test_answer(self):
+        response = self.app.get('/0/0')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_question(self):
+        new_question = {
+            'title': 'What is your favorite book?',
+            'description': 'Select all that apply',
+            'options': [
+                {'text': 'Harry Potter', 'correct': True},
+                {'text': 'The Hunger Games', 'correct': True},
+                {'text': 'To Kill a Mockingbird', 'correct': False},
+                {'text': 'The Lord of the Rings', 'correct': False},
+            ]
+        }
+        response = self.app.post('/add', data=new_question, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(new_question, question_answer.questions)
+
+    def test_delete_question(self):
+        response = self.app.get('/delete', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(self.questions[0], question_answer.questions)
+
+    def test_update_question(self):
+        new_question = {
+            'title': 'What is your favorite movie?',
+            'description': 'Select all that apply',
+            'options': [
+                {'text': 'The Shawshank Redemption', 'correct': True},
+                {'text': 'The Godfather', 'correct': True},
+                {'text': 'The Dark Knight', 'correct': False},
+                {'text': '12 Angry Men', 'correct': False},
+            ]
+        }
+        response = self.app.post('/update/0', data=new_question, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(question_answer.questions[0], new_question)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

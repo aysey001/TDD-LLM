@@ -1,0 +1,38 @@
+[TESTS]
+import unittest
+import LogParser
+
+class TestLogParser(unittest.TestCase):
+
+    def test_parse_log_file(self):
+        log_file = "log.txt"
+        log_data = LogParser.parse_log_file(log_file)
+        self.assertIsInstance(log_data, list)
+        self.assertGreater(len(log_data), 0)
+
+    def test_extract_data(self):
+        log_entry = "2022-02-23 12:34:56 - INFO - User logged in"
+        log_data = LogParser.extract_data(log_entry)
+        self.assertIsInstance(log_data, dict)
+        self.assertEqual(log_data["date"], "2022-02-23")
+        self.assertEqual(log_data["time"], "12:34:56")
+        self.assertEqual(log_data["severity"], "INFO")
+        self.assertEqual(log_data["message"], "User logged in")
+
+    def test_generate_report(self):
+        log_data = [{"date": "2022-02-23", "time": "12:34:56", "severity": "INFO", "message": "User logged in"}, {"date": "2022-02-23", "time": "13:34:56", "severity": "WARNING", "message": "User logged out"}]
+        report = LogParser.generate_report(log_data)
+        self.assertIsInstance(report, str)
+        self.assertGreater(len(report), 0)
+
+    def test_main(self):
+        args = ["log.txt", "--date", "2022-02-23"]
+        log_data = LogParser.main(args)
+        self.assertIsInstance(log_data, list)
+        self.assertGreater(len(log_data), 0)
+        self.assertIn("2022-02-23", log_data)
+        self.assertNotIn("2022-02-24", log_data)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

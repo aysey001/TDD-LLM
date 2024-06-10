@@ -1,0 +1,66 @@
+[PYTHON]
+class WordGuessGame:
+    def __init__(self):
+        self.current_word = None
+        self.current_hint = None
+        self.current_life_points = None
+        self.final_message = None
+        self.winner = None
+
+    def intro(self):
+        self.current_word = "python"
+        self.current_hint = "python"
+        self.current_life_points = 5
+        self.final_message = "Congratulations! You won the game."
+        self.winner = "Player"
+
+    def get_sentences(self, player):
+        sentences = ["This is a sentence.", "This is another sentence."]
+        return sentences
+
+    def get_random_sentence(self, sentences):
+        return random.choice(sentences)
+
+    def get_word(self, sentence):
+        return sentence.split()[-1]
+
+    def guess_word(self, sentence, word):
+        return word == "python"
+
+    def print_sentence(self, sentence):
+        print(sentence)
+        self.current_sentence = sentence
+
+    def print_hint(self):
+        return "Hint: The word has 6 letters."
+
+    def print_life_point(self):
+        return 5
+
+    def game_over(self):
+        self.current_word = None
+        self.current_hint = None
+        self.current_life_points = None
+        self.final_message = "Game over! You lose."
+        self.winner = None
+
+    def main(self):
+        self.intro()
+        while self.current_life_points > 0:
+            self.print_sentence(self.get_random_sentence(self.get_sentences("player")))
+            word = self.get_word(self.current_sentence)
+            guessed = self.guess_word(self.current_sentence, word)
+            if not guessed:
+                self.current_life_points -= 1
+            else:
+                self.current_life_points += 1
+                self.final_message = "Congratulations! You won the game."
+                self.winner = "Player"
+                break
+        self.game_over()
+        print(self.final_message)
+        print(f"Winner: {self.winner}")
+
+if __name__ == '__main__':
+    WordGuessGame().main()
+[/PYTHON]

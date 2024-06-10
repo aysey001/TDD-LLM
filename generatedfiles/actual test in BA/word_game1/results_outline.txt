@@ -1,0 +1,22 @@
+[LIST]
+1. create a game class with methods for handling player turns and tracking the current state of the game
+2. create a player class with methods for handling player turns and tracking their score and life points
+3. create a sentence class with methods for handling sentences and tracking their word count and content
+4. create a hint class with methods for handling hints and tracking their relevance and effectiveness
+5. create a console class with methods for handling input and output and tracking the current state of the game
+6. create a game engine class with methods for handling the game logic and flow and calling the appropriate methods in the game, player, sentence, hint and console classes
+7. create a main method that initializes the game engine and starts the game loop
+8. create a loop that runs until the game ends and calls the game engine's next turn method
+9. create a method in the game engine that handles player turns and updates the game state accordingly
+10. create a method in the game engine that handles sentence turns and updates the game state accordingly
+11. create a method in the game engine that handles hint turns and updates the game state accordingly
+12. create a method in the game engine that handles life points and updates the game state accordingly
+13. create a method in the game engine that handles game end conditions and updates the game state accordingly
+14. create a method in the game engine that handles game output and prints the current state of the game to the console
+15. create a method in the console class that handles input and updates the game state accordingly
+16. create a method in the console class that handles output and prints the current state of the game to the console
+17. create a method in the player class that handles input and updates the player's score and life points accordingly
+18. create a method in the sentence class that handles input and updates the sentence's word count and content accordingly
+19. create a method in the hint class that handles input and updates the hint's relevance and effectiveness accordingly
+20. create a method in the game engine that handles game logic and flow and calls the appropriate methods in the game, player, sentence and hint classes
+[/LIST]

@@ -1,0 +1,22 @@
+[LIST]
+1. parse_log_file(log_file) # reads and parses a log file and returns a list of log entries
+2. extract_data(log_entry) # extracts data from a log entry and returns a dictionary with relevant information
+3. generate_report(log_data) # generates a summary report from log data and returns a string with the report
+4. main() # uses parse_log_file and extract_data functions to read and extract data from log files, and then uses generate_report function to generate report and print it
+5. handle_command_line_arguments(args) # handles command-line arguments and returns a dictionary with relevant information
+6. handle_filters(args) # handles filters provided by command-line arguments and returns a dictionary with relevant information
+7. read_log_file(log_file) # reads and returns the contents of a log file
+8. print_report(report) # prints a summary report and returns None
+9. log_data = parse_log_file(log_file) # parses log file and extracts data
+10. log_data = extract_data(log_entry) # extracts data from log entry
+11. report = generate_report(log_data) # generates report from log data
+12. print(report) # prints report
+13. handle_command_line_arguments(args) # handles command-line arguments and returns a dictionary with relevant information
+14. handle_filters(args) # handles filters provided by command-line arguments and returns a dictionary with relevant information
+15. read_log_file(log_file) # reads and returns the contents of a log file
+16. print_report(report) # prints a summary report and returns None
+17. log_data = parse_log_file(log_file) # parses log file and extracts data
+18. log_data = extract_data(log_entry) # extracts data from log entry
+19. report = generate_report(log_data) # generates report from log data
+20. print(report) # prints report
+[/LIST]

@@ -10,10 +10,10 @@ from prompthandle.fileaccess import read_file, write_file
 
 ## prepare
 # settings
-entry_point = "test"
-stop_point = "code"
-example_type = "flaskr"
-user_message_path = "prompt//user_message//ocpl.txt"
+entry_point = "new"
+stop_point = ""
+example_type = "console_app"
+user_message_path = "prompt//user_message//logfileanalyzer.txt"
 # connect to llm
 llm = ChatOpenAI(openai_api_key="not needed", openai_api_base="http://localhost:8000/v1")
 

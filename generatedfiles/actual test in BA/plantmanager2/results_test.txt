@@ -1,0 +1,74 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import os
+import tempfile
+import json
+
+import plant  # Import the Flask app
+
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = plant.app.test_client()
+        self.temp_db_fd, plant.app.config['DATABASE'] = tempfile.mkstemp()
+        plant.app.config['TESTING'] = True
+        self.plants = [
+            {'species': 'Rose', 'watering_schedule': 'Twice a week', 'sunlight_requirements': 'Full sunlight',
+             'notes': 'Needs fertilizer every month'},
+            {'species': 'Lily', 'watering_schedule': 'Once a week', 'sunlight_requirements': 'Partial shade',
+             'notes': 'Sensitive to overwatering'}
+        ]
+        with open(plant.app.config['DATABASE'], 'w') as f:
+            json.dump(self.plants, f)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(plant.app.config['DATABASE'])
+
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(plant.app.config['DATABASE'], 'r')) as mock_open:
+            plant.load_data()
+            mock_open.assert_called_once_with('plants.json', 'r')
+            self.assertEqual(plant.plants, self.plants)
+
+    def test_load_data_no_file(self):
+        os.unlink(plant.app.config['DATABASE'])
+        plant.load_data()
+        self.assertEqual(plant.plants, [])
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_plants(self):
+        response = self.app.get('/plants')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_plant_get(self):
+        response = self.app.get('/add_plant')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_plant_post(self):
+        new_plant = {
+            'species': 'Orchid',
+            'watering_schedule': 'Once a week',
+            'sunlight_requirements': 'Indirect sunlight',
+            'notes': 'Requires high humidity'
+        }
+        response = self.app.post('/add_plant', data=new_plant, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(new_plant, plant.plants)
+
+    def test_delete_plant(self):
+        response = self.app.get('/delete_plant/0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(self.plants[0], plant.plants)
+
+    def test_search_plants(self):
+        response = self.app.get('/search')
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

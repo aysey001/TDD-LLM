@@ -1,0 +1,48 @@
+[TESTS]
+import unittest
+import LogFileAnalyzer
+
+class TestLogFileAnalyzer(unittest.TestCase):
+
+    def test_init(self):
+        analyzer = LogFileAnalyzer("logfile.txt")
+        self.assertEqual(analyzer.logfile, "logfile.txt")
+        self.assertEqual(analyzer.filters, {})
+
+    def test_read_log(self):
+        analyzer = LogFileAnalyzer("logfile.txt")
+        log = analyzer.read_log()
+        self.assertIsInstance(log, dict)
+        self.assertIn("IP address", log)
+        self.assertIn("timestamp", log)
+        self.assertIn("request method", log)
+        self.assertIn("URL", log)
+        self.assertIn("status code", log)
+        self.assertIn("response time", log)
+
+    def test_calculate_summary(self):
+        analyzer = LogFileAnalyzer("logfile.txt")
+        summary = analyzer.calculate_summary()
+        self.assertIsInstance(summary, dict)
+        self.assertIn("total requests", summary)
+        self.assertIn("common request methods", summary)
+        self.assertIn("top 10 most requested URLs", summary)
+        self.assertIn("response time per status code", summary)
+
+    def test_detect_errors(self):
+        analyzer = LogFileAnalyzer("logfile.txt")
+        errors = analyzer.detect_errors()
+        self.assertIsInstance(errors, dict)
+        self.assertIn("error", errors)
+        self.assertIn("count", errors)
+
+    def test_print_summary(self):
+        analyzer = LogFileAnalyzer("logfile.txt")
+        summary = analyzer.calculate_summary()
+        errors = analyzer.detect_errors()
+        analyzer.print_summary(summary, errors)
+        self.assertTrue(True)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

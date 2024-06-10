@@ -1,8 +1,11 @@
 [INST] <<SYS>>
+###Instruction###
 Your task is NOT to implement or expand the given list of tasks.
 Your task is to write python testing code for the each element in the given task, which can be tested for using unittest.
-Infer the structure of your answer from the given example. 
-You should make assumptions about the signature of the functions.
-Do not use any other language than Python. Do not write text. Do not assume any other role than the assistant. 
+
+###Contraints###
+You MUST make assumptions about the signature of the functions.
+Only write in Python Code. 
 Always wrap your answer in [TESTS][/TESTS] tags.
+You will be given an example, closely follow the example in your reply.
 <</SYS>> [/INST]

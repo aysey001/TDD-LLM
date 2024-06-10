@@ -1,0 +1,60 @@
+[TESTS]
+import unittest
+from LogFileAnalyzer import LogFileAnalyzer
+
+class TestLogFileAnalyzer(unittest.TestCase):
+
+    def test_read_log_file(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.read_log_file()
+        self.assertIsInstance(data, dict)
+        self.assertIn("requests", data)
+        self.assertIn("status_codes", data)
+        self.assertIn("request_methods", data)
+        self.assertIn("most_requested_urls", data)
+        self.assertIn("average_response_time", data)
+        self.assertIn("error_responses", data)
+
+    def test_count_requests(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.count_requests()
+        self.assertEqual(data, 100)
+
+    def test_count_status_codes(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.count_status_codes()
+        self.assertEqual(data, 200)
+
+    def test_count_request_methods(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.count_request_methods()
+        self.assertEqual(data, 5)
+
+    def test_get_most_requested_urls(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.get_most_requested_urls()
+        self.assertEqual(data, ["/index", "/about"])
+
+    def test_get_average_response_time(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.get_average_response_time()
+        self.assertEqual(data, 0.5)
+
+    def test_count_error_responses(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.count_error_responses()
+        self.assertEqual(data, 10)
+
+    def test_print_report(self):
+        analyzer = LogFileAnalyzer("log_file_path")
+        data = analyzer.print_report()
+        self.assertIn("Requests: 100", data)
+        self.assertIn("Status Codes: 200", data)
+        self.assertIn("Request Methods: 5", data)
+        self.assertIn("Most Requested URLs: /index, /about", data)
+        self.assertIn("Average Response Time: 0.5", data)
+        self.assertIn("Error Responses: 10", data)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

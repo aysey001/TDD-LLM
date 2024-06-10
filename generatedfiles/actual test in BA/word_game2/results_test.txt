@@ -1,0 +1,76 @@
+[TESTS]
+import unittest
+import HangmanGame
+
+class TestHangmanGame(unittest.TestCase):
+
+    def test_get_sentences(self):
+        game = HangmanGame()
+        sentences = game.get_sentences()
+        self.assertIsInstance(sentences, list)
+        self.assertGreaterEqual(len(sentences), 1)
+
+    def test_get_word_count(self):
+        game = HangmanGame()
+        word_count = game.get_word_count()
+        self.assertIsInstance(word_count, int)
+        self.assertGreater(word_count, 0)
+
+    def test_print_sentence(self):
+        game = HangmanGame()
+        sentence = game.print_sentence()
+        self.assertIsInstance(sentence, str)
+        self.assertNotEqual(sentence, "")
+        self.assertIn("*", sentence)
+
+    def test_guess_word(self):
+        game = HangmanGame()
+        word = "apple"
+        guessed = game.guess_word(word)
+        self.assertTrue(guessed)
+        self.assertIn(word, game.guessed_words)
+
+    def test_check_word(self):
+        game = HangmanGame()
+        word = "apple"
+        guessed = game.check_word(word)
+        self.assertTrue(guessed)
+        self.assertIn(word, game.guessed_words)
+
+    def test_print_guessed_word(self):
+        game = HangmanGame()
+        word = "apple"
+        game.print_guessed_word(word)
+        self.assertIn(word, game.guessed_words)
+
+    def test_print_hint(self):
+        game = HangmanGame()
+        game.print_hint()
+        self.assertIsInstance(game.hint, str)
+        self.assertNotEqual(game.hint, "")
+
+    def test_pass(self):
+        game = HangmanGame()
+        game.pass()
+        self.assertEqual(game.lives, game.lives - 1)
+
+    def test_lose_life(self):
+        game = HangmanGame()
+        game.lose_life()
+        self.assertEqual(game.lives, game.lives - 1)
+
+    def test_main(self):
+        game = HangmanGame()
+        game.main()
+        self.assertIsInstance(game.lives, int)
+        self.assertGreaterEqual(game.lives, 0)
+        self.assertIsInstance(game.word_count, int)
+        self.assertGreaterEqual(game.word_count, 1)
+        self.assertIsInstance(game.sentence, str)
+        self.assertNotEqual(game.sentence, "")
+        self.assertIn("*", game.sentence)
+        self.assertIsInstance(game.guessed_words, list)
+        self.assertGreaterEqual(len(game.guessed_words), 0)
+        self.assertIsInstance(game.hint, str)
+        self.assertNotEqual(game.hint, "")
+[/TESTS]

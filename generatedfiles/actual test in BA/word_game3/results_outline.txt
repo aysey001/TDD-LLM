@@ -1,0 +1,12 @@
+[LIST]
+1. intro() # prints the initial state and instructions
+2. get_sentences(player) # takes a player object and returns a list of sentences
+3. get_random_sentence(sentences) # takes a list of sentences and returns a random sentence
+4. get_word(sentence) # takes a sentence and returns a word from it
+5. guess_word(sentence, word) # takes a sentence and a word and returns true if the word is in the sentence
+6. print_sentence(sentence) # takes a sentence and prints it out with "*" instead of words
+7. print_hint(hint) # prints the hint message
+8. print_life_point(life_points) # prints the current life points
+9. game_over() # prints the final state and the winner message
+10. main() # calls all the functions in the right order
+[/LIST]

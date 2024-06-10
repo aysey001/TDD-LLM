@@ -1,0 +1,8 @@
+[INST]
+This is a co-op game. The Console prints the current state and the input says "Player 1:" or "Player 2:"
+First Player 1 writes 3 sentences in a console. The sentences must have the same word count.
+The app selects one sentence at random, but prints it out with "*" instead of words.
+Then Player 2 must guess one word in the sentence. If its right, the sentence gets printed with the "*" replaced with the word. Else Player 2 loses one Life-Point
+Then Player 1 can enter a hint or pass to restore 1 Life-Point.
+Player 2 needs to guess, until the sentence is done or he loses 2 Life-Points.
+[/INST]

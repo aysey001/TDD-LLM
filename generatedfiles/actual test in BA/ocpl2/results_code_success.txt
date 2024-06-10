@@ -1,0 +1,65 @@
+[PYTHON]
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import json
+import os
+
+app = Flask(__name__)
+
+questions = []
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/questions')
+def view_questions():
+    return render_template('questions.html', questions=questions)
+
+@app.route('/add_question', methods=['GET', 'POST'])
+def add_question():
+    if request.method == 'POST':
+        question = {
+            'title': request.form['title'],
+            'description': request.form['description'],
+            'option1': request.form['option1'],
+            'option2': request.form['option2'],
+            'option3': request.form['option3'],
+            'option4': request.form['option4'],
+            'answer': request.form['answer']
+        }
+        questions.append(question)
+        save_data()
+        return redirect(url_for('view_questions'))
+    else:
+        return render_template('add_question.html')
+
+@app.route('/delete_question/<int:question_id>')
+def delete_question(question_id):
+    if 0 <= question_id < len(questions):
+        del questions[question_id]
+        save_data()
+    return redirect(url_for('view_questions'))
+
+@app.route('/question/<int:question_id>')
+def view_question(question_id):
+    if 0 <= question_id < len(questions):
+        return render_template('question.html', question=questions[question_id])
+    else:
+        return render_template('404.html'), 404
+
+def save_data():
+    with open('questions.json', 'w') as file:
+        json.dump(questions, file)
+
+def load_data():
+    global questions
+    if os.path.exists('questions.json'):
+        with open('questions.json', 'r') as file:
+            questions = json.load(file)
+    else:
+        questions = []
+
+if __name__ == '__main__':
+    load_data()
+    app.run(debug=True)
+[/PYTHON]

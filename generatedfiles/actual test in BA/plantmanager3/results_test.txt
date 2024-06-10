@@ -1,0 +1,69 @@
+[CODE]
+import json
+from flask import Flask, render_template, request, redirect, url_for
+from flask_jsondash import JSONDash
+
+app = Flask(__name__)
+app.secret_key = 'secret key'
+app.config['JSONDASH'] = JSONDash()
+app.config['DATABASE'] = 'plants.json'
+app.config['SEARCH'] = ['species', 'watering_schedule', 'sunlight_requirements']
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/plants')
+def view_plants():
+    plants = load_data()
+    return render_template('plants.html', plants=plants)
+
+@app.route('/add_plant', methods=['GET', 'POST'])
+def add_plant():
+    if request.method == 'POST':
+        new_plant = request.form.to_dict()
+        add_data(new_plant)
+        return redirect(url_for('view_plants'))
+    return render_template('add_plant.html')
+
+@app.route('/delete_plant/<int:plant_id>')
+def delete_plant(plant_id):
+    delete_data(plant_id)
+    return redirect(url_for('view_plants'))
+
+@app.route('/search')
+def search():
+    query = request.args.get('query', '')
+    plants = search_data(query)
+    return render_template('search.html', query=query, plants=plants)
+
+def load_data():
+    with open(app.config['DATABASE'], 'r') as f:
+        plants = json.load(f)
+    return plants
+
+def add_data(new_plant):
+    plants = load_data()
+    plants.append(new_plant)
+    with open(app.config['DATABASE'], 'w') as f:
+        json.dump(plants, f)
+
+def delete_data(plant_id):
+    plants = load_data()
+    del plants[plant_id]
+    with open(app.config['DATABASE'], 'w') as f:
+        json.dump(plants, f)
+
+def search_data(query):
+    plants = load_data()
+    result = []
+    for plant in plants:
+        for key, value in plant.items():
+            if key in app.config['SEARCH'] and query.lower() in value.lower():
+                result.append(plant)
+                break
+    return result
+
+if __name__ == '__main__':
+    app.run(debug=True)
+[/CODE]

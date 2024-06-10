@@ -1,0 +1,9 @@
+[LIST]
+1. Import Flask and JSON modules: `from flask import Flask, jsonify` and `import json`
+2. Define data structure: Define a data structure for storing questions and answers in JSON format. Each question should have a title, description, and four options and their corresponding booleans.
+3. Create routes: Create routes for adding/deleting questions, viewing all questions, and viewing individual questions.
+4. Define functions: Define functions for adding/deleting questions, loading/saving data from JSON file, and rendering templates.
+5. Define main function: Define main function to run Flask application.
+6. Run Flask application: Run Flask application using `if __name__ == '__main__':` block.
+7. Test application: Test application using various scenarios and check if it works as expected.
+[/LIST]

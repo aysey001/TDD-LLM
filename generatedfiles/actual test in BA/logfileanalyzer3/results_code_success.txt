@@ -1,0 +1,65 @@
+[PYTHON]
+class LogFileAnalyzer:
+    def __init__(self, log_file_path):
+        self.log_file_path = log_file_path
+
+    def read_log_file(self):
+        with open(self.log_file_path, "r") as file:
+            data = file.read()
+            file.close()
+        return data
+
+    def count_requests(self):
+        data = self.read_log_file()
+        return data.count("GET") + data.count("POST") + data.count("PUT") + data.count("DELETE")
+
+    def count_status_codes(self):
+        data = self.read_log_file()
+        return data.count("200") + data.count("400") + data.count("500")
+
+    def count_request_methods(self):
+        data = self.read_log_file()
+        return data.count("GET") + data.count("POST") + data.count("PUT") + data.count("DELETE") + data.count("PATCH") + data.count("OPTIONS") + data.count("HEAD") + data.count("TRACE")
+
+    def get_most_requested_urls(self):
+        data = self.read_log_file()
+        urls = data.split("GET")
+        most_requested_urls = {}
+        for url in urls:
+            if "200" in url:
+                url = url.split(" ")[1]
+                if url in most_requested_urls:
+                    most_requested_urls[url] += 1
+                else:
+                    most_requested_urls[url] = 1
+        return sorted(most_requested_urls, key=most_requested_urls.get, reverse=True)[:5]
+
+    def get_average_response_time(self):
+        data = self.read_log_file()
+        response_times = data.split("time=")
+        total_response_time = 0
+        for response_time in response_times:
+            if "ms" in response_time:
+                response_time = int(response_time.split("ms")[0])
+                total_response_time += response_time
+        return total_response_time / len(response_times)
+
+    def count_error_responses(self):
+        data = self.read_log_file()
+        return data.count("400") + data.count("500")
+
+    def print_report(self):
+        report = ""
+        report += "Requests: " + str(self.count_requests()) + "\n"
+        report += "Status Codes: " + str(self.count_status_codes()) + "\n"
+        report += "Request Methods: " + str(self.count_request_methods()) + "\n"
+        report += "Most Requested URLs: " + ", ".join(self.get_most_requested_urls()) + "\n"
+        report += "Average Response Time: " + str(self.get_average_response_time()) + "\n"
+        report += "Error Responses: " + str(self.count_error_responses()) + "\n"
+        return report
+
+if __name__ == '__main__':
+    log_file_path = "log_file_path"
+    analyzer = LogFileAnalyzer(log_file_path)
+    print(analyzer.print_report())
+[/PYTHON]
