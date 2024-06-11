@@ -1,0 +1,10 @@
+[LIST]
+1. Load key-value pairs from text file into dictionary
+2. Display random word from dictionary and start timer
+3. Wait for input from player
+4. Check if input is correct and update dictionary with new word if correct
+5. Repeat steps 2-4 until all words are done
+6. Display gameover text and provide score based on time taken and number of correct inputs
+7. Save score to file and display scoreboard with top scores
+8. Exit game when player quits or reaches end of game
+[/LIST]

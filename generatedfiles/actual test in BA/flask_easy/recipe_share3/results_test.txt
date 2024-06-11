@@ -1,0 +1,78 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import os
+import tempfile
+import json
+
+import recipe  # Import the Flask app
+
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = recipe.app.test_client()
+        self.temp_db_fd, recipe.app.config['DATABASE'] = tempfile.mkstemp()
+        recipe.app.config['TESTING'] = True
+        self.recipes = [
+            {'name': 'Pizza', 'description': 'Tasty pizza with cheese, tomato sauce, and pepperoni',
+             'tools': ['Pizza stone', 'Pizza pan'], 'ingredients': ['Flour', 'Wheat', 'Tomato sauce', 'Cheese', 'Pepperoni'], 'extras': ['Bread crumbs', 'Breadcrumbs']},
+            {'name': 'Ramen', 'description': 'Japanese noodle soup with a rich pork broth', 'tools': ['Wok', 'Stir fry pan'], 'ingredients': ['Ramen noodles', 'Pork bones', 'Chicken broth', 'Soy sauce', 'Ginger'], 'extras': ['Noodle soup seasoning']}
+        ]
+        with open(recipe.app.config['DATABASE'], 'w') as f:
+            json.dump(self.recipes, f)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(recipe.app.config['DATABASE'])
+
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(recipe.app.config['DATABASE'], 'r')) as mock_open:
+            recipe.load_data()
+            mock_open.assert_called_once_with('recipes.json', 'r')
+            self.assertEqual(recipe.recipes, self.recipes)
+
+    def test_load_data_no_file(self):
+        os.unlink(recipe.app.config['DATABASE'])
+        recipe.load_data()
+        self.assertEqual(recipe.recipes, [])
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_recipes(self):
+        response = self.app.get('/view_recipes')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_recipe_get(self):
+        response = self.app.get('/add_recipe')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_recipe_post(self):
+        new_recipe = {
+            'name': 'Pasta',
+            'description': 'Italian pasta dish with tomato sauce and cheese',
+            'tools': ['Pasta machine'],
+            'ingredients': ['Pasta', 'Tomato sauce', 'Cheese'],
+            'extras': ['Parmesan cheese']
+        }
+        response = self.app.post('/add_recipe', data=new_recipe, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(new_recipe, recipe.recipes)
+
+    def test_search_recipes(self):
+        response = self.app.get('/search')
+        self.assertEqual(response.status_code, 200)
+
+    def test_generate_recipe(self):
+        response = self.app.get('/generate')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_recipe(self):
+        response = self.app.get('/delete_recipe/0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(self.recipes[0], recipe.recipes)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

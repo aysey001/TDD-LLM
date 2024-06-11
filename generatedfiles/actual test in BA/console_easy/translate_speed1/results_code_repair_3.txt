@@ -1,0 +1,27 @@
+[PYTHON]
+def load_words(file_name):
+    with open(file_name, "r") as file:
+        words = file.read().splitlines()
+    return {word: word for word in words}
+
+def display_word(word):
+    return word
+
+def start_timer():
+    return time.time()
+
+def check_input(word, input):
+    if input in word:
+        return True
+    else:
+        return False
+
+def end_timer(timer):
+    return time.time() - timer
+
+def print_result(word, correct):
+    if correct:
+        return f"{word} correct!"
+    else:
+        return f"{word} incorrect!"
+[/PYTHON]

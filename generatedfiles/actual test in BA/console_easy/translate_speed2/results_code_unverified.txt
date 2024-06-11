@@ -1,0 +1,78 @@
+[PYTHON]
+import re
+import time
+import random
+from typing import Dict, List, Union
+
+class WordGame:
+    def load_words(file_name: str) -> Dict[str, str]:
+        """
+        Loads words from a text file and returns a dictionary with word as key and definition as value.
+        :param file_name: Text file name containing word and definition pairs.
+        :return: Dictionary with word as key and definition as value.
+        """
+        words = {}
+        with open(file_name, "r") as file:
+            for line in file:
+                word, definition = line.split(" - ")
+                words[word] = definition
+        return words
+
+    def get_random_word(words: Dict[str, str]) -> str:
+        """
+        Returns a random word from a dictionary.
+        :param words: Dictionary containing words as keys and definitions as values.
+        :return: Random word from the dictionary.
+        """
+        return random.choice(list(words.keys()))
+
+    def start_timer() -> float:
+        """
+        Starts a timer and returns the current time in seconds since the epoch.
+        :return: Current time in seconds since the epoch.
+        """
+        return time.time()
+
+    def get_input() -> str:
+        """
+        Gets input from the user and returns it as a string.
+        :return: Input from the user as a string.
+        """
+        return input("Enter a word or 'q' to quit: ")
+
+    def check_input(input: str, file_name: str) -> bool:
+        """
+        Checks if a word is present in a text file and returns True if it is present, False otherwise.
+        :param input: Input from the user as a string.
+        :param file_name: Text file name containing word and definition pairs.
+        :return: True if word is present in file, False otherwise.
+        """
+        words = load_words(file_name)
+        return input in words
+
+    def print_result(result: Union[str, List[str]]) -> str:
+        """
+        Prints a result and returns the result as a string.
+        :param result: Result as a string or a list of strings.
+        :return: Result as a string.
+        """
+        if isinstance(result, list):
+            result = ", ".join(result)
+        return f"Result: {result}"
+
+    def main():
+        words = load_words("words.txt")
+        while True:
+            word = get_random_word(words)
+            input = get_input()
+            if input == "q":
+                break
+            if check_input(input, "words.txt"):
+                print(print_result(input))
+            else:
+                print(print_result("Not Found"))
+        print(print_result("Game Over!"))
+
+if __name__ == '__main__':
+    main()
+[/PYTHON]

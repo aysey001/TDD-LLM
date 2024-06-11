@@ -1,0 +1,244 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import os
+import tempfile
+import json
+from flask import Flask
+from flask_bootstrap import Bootstrap
+from flask_json import FlaskJSON
+from recipe import app  # Import the Flask app
+
+class TestRecipe(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.temp_db_fd, app.config['DATABASE'] = tempfile.mkstemp()
+        app.config['TESTING'] = True
+        self.recipes = [
+            {
+                'name': 'Chicken Tikka Masala',
+                'description': 'Indian and Spanish-inspired chicken dish',
+                'tools': ['tray', 'spatula', 'garnish'],
+                'ingredients': [
+                    '1 cup all-purpose flour',
+                    '1/2 cup cornstarch',
+                    '1/2 cup water',
+                    '1/4 cup vegetable oil',
+                    '1/2 cup yogurt',
+                    '1/4 cup garam masala',
+                    '1/4 cup cumin',
+                    'salt',
+                    '1/4 cup chicken tikka masala'
+                ],
+                'extras': ['1/4 cup vegetable oil', '1/4 cup chicken tikka masala']
+            },
+            {
+                'name': 'Beef and Broccoli Stir Fry',
+                'description': 'Hearty and healthy stir fry',
+                'tools': ['stir fry pan', 'spatula', 'garnish'],
+                'ingredients': [
+                    '1 lb ground beef',
+                    '1 cup broccoli florets',
+                    '2 cloves garlic',
+                    '1/4 cup vegetable oil',
+                    '2 tablespoons soy sauce',
+                    '1 tablespoon honey',
+                    '1/4 cup water',
+                    '1/4 cup cornstarch',
+                    'salt',
+                    'black pepper'
+                ],
+                'extras': ['1 lb ground beef', '1 cup broccoli florets']
+            }
+        ]
+        with open(app.config['DATABASE'], 'w') as f:
+            json.dump(self.recipes, f)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(app.config['DATABASE'])
+
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(app.config['DATABASE'], 'r')) as mock_open:
+            app.load_data()
+            mock_open.assert_called_once_with('recipes.json', 'r')
+            self.assertEqual(app.recipes, self.recipes)
+
+    def test_load_data_no_file(self):
+        os.unlink(app.config['DATABASE'])
+        app.load_data()
+        self.assertEqual(app.recipes, [])
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Welcome to Recipe Book!', response.data)
+        self.assertIn(b'Search Recipes', response.data)
+        self.assertIn(b'Add Recipe', response.data)
+
+    def test_recipes(self):
+        response = self.app.get('/recipes')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Search Recipes', response.data)
+        self.assertIn(b'Recipe Name', response.data)
+        self.assertIn(b'Description', response.data)
+        self.assertIn(b'Tools', response.data)
+        self.assertIn(b'Ingredients', response.data)
+        self.assertIn(b'Extras', response.data)
+        self.assertIn(b'View', response.data)
+        self.assertIn(b'Edit', response.data)
+        self.assertIn(b'Delete', response.data)
+
+    def test_add_recipe(self):
+        response = self.app.get('/add-recipe')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Add New Recipe', response.data)
+        self.assertIn(b'Name', response.data)
+        self.assertIn(b'Description', response.data)
+        self.assertIn(b'Tools', response.data)
+        self.assertIn(b'Ingredients', response.data)
+        self.assertIn(b'Extras', response.data)
+        self.assertIn(b'Submit', response.data)
+
+    def test_add_recipe_post(self):
+        new_recipe = {
+            'name': 'Chicken Tikka Masala',
+            'description': 'Indian and Spanish-inspired chicken dish',
+            'tools': ['tray', 'spatula', 'garnish'],
+            'ingredients': [
+                '1 cup all-purpose flour',
+                '1/2 cup cornstarch',
+                '1/2 cup water',
+                '1/4 cup vegetable oil',
+                '1/2 cup yogurt',
+                '1/4 cup garam masala',
+                '1/4 cup cumin',
+                'salt',
+                '1/4 cup chicken tikka masala'
+            ],
+            'extras': ['1/4 cup vegetable oil', '1/4 cup chicken tikka masala']
+        }
+        response = self.app.post('/add-recipe', data=new_recipe, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'New recipe added!', response.data)
+        self.assertIn(b'Chicken Tikka Masala', response.data)
+        self.assertIn(b'Indian and Spanish-inspired chicken dish', response.data)
+        self.assertIn(b'Tray', response.data)
+        self.assertIn(b'Spatula', response.data)
+        self.assertIn(b'Garnish', response.data)
+        self.assertIn(b'All-purpose flour', response.data)
+        self.assertIn(b'Cornstarch', response.data)
+        self.assertIn(b'Water', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Yogurt', response.data)
+        self.assertIn(b'Garam masala', response.data)
+        self.assertIn(b'Cumin', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Chicken tikka masala', response.data)
+
+    def test_edit_recipe(self):
+        response = self.app.get('/edit-recipe/0')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Edit Recipe', response.data)
+        self.assertIn(b'Name', response.data)
+        self.assertIn(b'Description', response.data)
+        self.assertIn(b'Tools', response.data)
+        self.assertIn(b'Ingredients', response.data)
+        self.assertIn(b'Extras', response.data)
+        self.assertIn(b'Submit', response.data)
+        self.assertIn(b'Chicken Tikka Masala', response.data)
+        self.assertIn(b'Indian and Spanish-inspired chicken dish', response.data)
+        self.assertIn(b'Tray', response.data)
+        self.assertIn(b'Spatula', response.data)
+        self.assertIn(b'Garnish', response.data)
+        self.assertIn(b'All-purpose flour', response.data)
+        self.assertIn(b'Cornstarch', response.data)
+        self.assertIn(b'Water', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Yogurt', response.data)
+        self.assertIn(b'Garam masala', response.data)
+        self.assertIn(b'Cumin', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Chicken tikka masala', response.data)
+
+    def test_edit_recipe_post(self):
+        edited_recipe = {
+            'name': 'Beef and Broccoli Stir Fry',
+            'description': 'Hearty and healthy stir fry',
+            'tools': ['stir fry pan', 'spatula', 'garnish'],
+            'ingredients': [
+                '1 lb ground beef',
+                '1 cup broccoli florets',
+                '2 cloves garlic',
+                '1/4 cup vegetable oil',
+                '2 tablespoons soy sauce',
+                '1 tablespoon honey',
+                '1/4 cup water',
+                '1/4 cup cornstarch',
+                'salt',
+                'black pepper'
+            ],
+            'extras': ['1 lb ground beef', '1 cup broccoli florets']
+        }
+        response = self.app.post('/edit-recipe/0', data=edited_recipe, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Recipe updated!', response.data)
+        self.assertIn(b'Beef and Broccoli Stir Fry', response.data)
+        self.assertIn(b'Hearty and healthy stir fry', response.data)
+        self.assertIn(b'Stir Fry Pan', response.data)
+        self.assertIn(b'Spatula', response.data)
+        self.assertIn(b'Garnish', response.data)
+        self.assertIn(b'1 lb ground beef', response.data)
+        self.assertIn(b'1 cup broccoli florets', response.data)
+        self.assertIn(b'2 cloves garlic', response.data)
+        self.assertIn(b'1/4 cup vegetable oil', response.data)
+        self.assertIn(b'2 tablespoons soy sauce', response.data)
+        self.assertIn(b'1 tablespoon honey', response.data)
+        self.assertIn(b'1/4 cup water', response.data)
+        self.assertIn(b'1/4 cup cornstarch', response.data)
+        self.assertIn(b'Salt', response.data)
+        self.assertIn(b'Black pepper', response.data)
+        self.assertIn(b'1 lb ground beef', response.data)
+        self.assertIn(b'1 cup broccoli florets', response.data)
+
+    def test_delete_recipe(self):
+        response = self.app.get('/delete-recipe/0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Recipe deleted!', response.data)
+        self.assertNotIn(b'Chicken Tikka Masala', response.data)
+        self.assertNotIn(b'Indian and Spanish-inspired chicken dish', response.data)
+        self.assertNotIn(b'Tray', response.data)
+        self.assertNotIn(b'Spatula', response.data)
+        self.assertNotIn(b'Garnish', response.data)
+        self.assertNotIn(b'All-purpose flour', response.data)
+        self.assertNotIn(b'Cornstarch', response.data)
+        self.assertNotIn(b'Water', response.data)
+        self.assertNotIn(b'Vegetable oil', response.data)
+        self.assertNotIn(b'Yogurt', response.data)
+        self.assertNotIn(b'Garam masala', response.data)
+        self.assertNotIn(b'Cumin', response.data)
+        self.assertNotIn(b'Vegetable oil', response.data)
+        self.assertNotIn(b'Chicken tikka masala', response.data)
+
+    def test_recipe_details(self):
+        response = self.app.get('/recipe-details/0')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Recipe Details', response.data)
+        self.assertIn(b'Chicken Tikka Masala', response.data)
+        self.assertIn(b'Indian and Spanish-inspired chicken dish', response.data)
+        self.assertIn(b'Tray', response.data)
+        self.assertIn(b'Spatula', response.data)
+        self.assertIn(b'Garnish', response.data)
+        self.assertIn(b'All-purpose flour', response.data)
+        self.assertIn(b'Cornstarch', response.data)
+        self.assertIn(b'Water', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Yogurt', response.data)
+        self.assertIn(b'Garam masala', response.data)
+        self.assertIn(b'Cumin', response.data)
+        self.assertIn(b'Vegetable oil', response.data)
+        self.assertIn(b'Chicken tikka masala', response.data)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

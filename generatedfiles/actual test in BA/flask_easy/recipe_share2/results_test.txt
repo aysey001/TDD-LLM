@@ -1,0 +1,68 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import os
+import tempfile
+import json
+import app  # Import the Flask app
+from app import app
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.temp_db_fd, app.config['DATABASE'] = tempfile.mkstemp()
+        app.config['TESTING'] = True
+        self.recipes = [
+            {'name': 'Chicken Tikka Masala', 'description': 'A popular Indian dish made with chicken, tomatoes and spices', 'tools': ['tomato', 'onion', 'garlic', 'ghee'], 'ingredients': ['chicken', 'onion', 'garlic', 'ghee', 'tomato', 'cumin', 'coriander', 'cayenne pepper', 'red chili flakes', 'garam masala', 'salt', 'black pepper'], 'extras': ['rice', 'naan bread', 'vegetables']},
+            {'name': 'Beef Madras', 'description': 'A popular Indian dish made with beef, tomatoes and spices', 'tools': ['tomato', 'onion', 'garlic', 'ghee'], 'ingredients': ['beef', 'onion', 'garlic', 'ghee', 'tomato', 'cumin', 'coriander', 'cayenne pepper', 'red chili flakes', 'garam masala', 'salt', 'black pepper'], 'extras': ['rice', 'naan bread', 'vegetables']},
+        ]
+        with open(app.config['DATABASE'], 'w') as f:
+            json.dump(self.recipes, f)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(app.config['DATABASE'])
+
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(app.config['DATABASE'], 'r')) as mock_open:
+            app.load_data()
+            mock_open.assert_called_once_with('recipes.json', 'r')
+            self.assertEqual(app.recipes, self.recipes)
+
+    def test_load_data_no_file(self):
+        os.unlink(app.config['DATABASE'])
+        app.load_data()
+        self.assertEqual(app.recipes, [])
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_recipes(self):
+        response = self.app.get('/recipes')
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_recipe(self):
+        new_recipe = {
+            'name': 'Chicken Biryani',
+            'description': 'A popular Indian dish made with chicken, rice and spices',
+            'tools': ['tomato', 'onion', 'garlic', 'ghee'],
+            'ingredients': ['chicken', 'onion', 'garlic', 'ghee', 'tomato', 'cumin', 'coriander', 'cayenne pepper', 'red chili flakes', 'garam masala', 'salt', 'black pepper'],
+            'extras': ['rice', 'naan bread', 'vegetables']
+        }
+        response = self.app.post('/recipes', data=new_recipe)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(new_recipe, app.recipes)
+
+    def test_delete_recipe(self):
+        response = self.app.get('/delete_recipe/0', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(self.recipes[0], app.recipes)
+
+    def test_search(self):
+        response = self.app.get('/search')
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

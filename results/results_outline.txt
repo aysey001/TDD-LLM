@@ -1,0 +1,13 @@
+[LIST]
+1. Import Necessary Modules: Import Flask and its extensions (e.g., Flask-Bootstrap) for web development and web framework, and Flask-JSON for handling JSON data.
+2. Initialize Flask App: Create an instance of Flask app and set its template directory and static directory.
+3. Define Data Structure: Define a data structure for recipes with name, description, tools, ingredients, extras, and a list for each.
+4. Route for Home Page: Create a route for home page (`/`) which displays welcome message and links to recipe search and add new recipe page.
+5. Route for Recipe Search: Create a route for recipe search page (`/recipes`) which displays a search bar and a list of recipes based on user search query.
+6. Route for Adding Recipes: Create a route for adding new recipe page (`/add-recipe`) which displays a form for adding new recipe with fields for recipe name, description, tools, ingredients, extras, and submit button.
+7. Route for Editing Recipes: Create a route for editing recipe page (`/edit-recipe/<recipe_id>`) which displays a form for editing recipe with fields for recipe name, description, tools, ingredients, extras, and submit button.
+8. Route for Deleting Recipes: Create a route for deleting recipe page (`/delete-recipe/<recipe_id>`) which displays confirmation message and handles recipe deletion.
+9. Route for Recipe Details: Create a route for recipe details page (`/recipe-details/<recipe_id>`) which displays recipe details with recipe name, description, tools, ingredients, extras, and submit button.
+10. Save Data: Write functions to load and save recipe data to JSON file.
+11. Main Function: Define main function to run Flask app.
+[/LIST]

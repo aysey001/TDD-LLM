@@ -1,0 +1,9 @@
+[LIST]
+1. load_words(filename) # load the key-value pairs from the text file and return a dictionary
+2. display_word(word) # display the word on the screen and return the word
+3. start_timer() # start a timer and return its initial time
+4. check_input(word, input) # check if the input is correct and return a boolean
+5. end_timer(timer) # stop the timer and return its final time
+6. print_result(word, correct) # print the result of the game (word, correct/incorrect, time)
+7. main() # use load_words(), display_word(), start_timer(), check_input(), end_timer(), and print_result() to play the game
+[/LIST]

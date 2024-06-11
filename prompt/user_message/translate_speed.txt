@@ -1,0 +1,7 @@
+[INST]
+This is a game to test how fast a Player can translate and write down words from English to German.
+You load key-value pairs of english/german words-pairs from a text-File.
+Then you display one word at random. Start a timer and wait for the input.
+Check if the input is correct, if so, keep going until all words are done.
+If one fails, display a gameover text.
+[/INST]

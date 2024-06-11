@@ -1,0 +1,44 @@
+[TESTS]
+import unittest
+import WordGame
+
+class TestWordGame(unittest.TestCase):
+
+    def test_load_words(self):
+        words = WordGame.load_words("words.txt")
+        self.assertIsInstance(words, dict)
+        self.assertGreater(len(words), 0)
+
+    def test_get_random_word(self):
+        words = WordGame.load_words("words.txt")
+        word = WordGame.get_random_word(words)
+        self.assertIn(word, words)
+
+    def test_start_timer(self):
+        start_time = WordGame.start_timer()
+        self.assertIsInstance(start_time, float)
+
+    def test_get_input(self):
+        input_ = WordGame.get_input()
+        self.assertIsInstance(input_, str)
+
+    def test_check_input(self):
+        input_ = WordGame.get_input()
+        self.assertIsInstance(input_, str)
+        self.assertTrue(WordGame.check_input(input_, "words.txt"))
+
+    def test_print_result(self):
+        result = WordGame.print_result("game over")
+        self.assertIsInstance(result, str)
+        self.assertEqual(result, "Game Over!")
+        result = WordGame.print_result("all words done")
+        self.assertIsInstance(result, str)
+        self.assertEqual(result, "All words done!")
+
+    def test_main(self):
+        WordGame.main()
+        self.assertTrue(True)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

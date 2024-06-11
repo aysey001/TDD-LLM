@@ -1,0 +1,9 @@
+[LIST]
+1. load_words() # load the key-value pairs from the text file and return a dictionary with the words
+2. get_random_word() # pick one random word from the dictionary and return it
+3. start_timer() # start a timer and return its start time
+4. get_input() # wait for input from the user and return it
+5. check_input() # check if the input is correct and return a boolean
+6. print_result() # print the result of the game (either "game over" or "all words done")
+7. main() # use the above functions to play the game until all words are done
+[/LIST]

@@ -1,0 +1,35 @@
+[INST]
+This is a flask-based Webapplication to add new cooking recipes and search through them.
+Every recipe has a name, a description,  a list of tools, a list of ingredience and a list for any extras.
+tools and extras are simple lists, while ingredients also have the amount, which is stored seperately.
+It should be possible to search for recipes by name or by an ingredient (without amount).
+
+This is how a recipe should be stored in a json-File:
+{
+    "recipes": [
+        {
+            "name": "Recipe Name",
+            "description": "Recipe Description",
+            "tools": [
+                "Tool1",
+                "Tool2"
+            ],
+            "ingredients": [
+                {
+                    "name": "Ingredient1",
+                    "amount": "Amount1"
+                },
+                {
+                    "name": "Ingredient2",
+                    "amount": "Amount2"
+                }
+            ],
+            "extras": [
+                "Extra1",
+                "Extra2"
+            ]
+        }
+    ]
+}
+
+[/INST]

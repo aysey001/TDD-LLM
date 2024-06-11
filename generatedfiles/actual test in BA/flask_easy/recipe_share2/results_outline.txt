@@ -1,0 +1,9 @@
+[LIST]
+1. Import Necessary Modules: Import `Flask` for web application framework and `json` for data storage.
+2. Initialize Flask App: Create an instance of `Flask` application and configure it with appropriate settings.
+3. Define Routes: Define routes for different functionalities such as adding new recipes, searching for recipes and displaying recipe details.
+4. Define Data Structure: Define a JSON data structure for storing recipes with information such as name, description, tools, ingredients, extras and their respective amounts.
+5. Create Functions: Create functions for loading and saving recipes from/to JSON file, searching for recipes based on name/ingredient and displaying recipe details.
+6. Main Function: Define main function to run the Flask application.
+7. Testing: Test the application using `unittest` library and ensure that all functionalities work as expected.
+[/LIST]

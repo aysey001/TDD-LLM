@@ -40,11 +40,11 @@ def delete_plant(plant_id):
     # Redirect to the plants page
     return redirect(url_for('view_plants'))
 
-@app.route('/search')
+@app.route('/search', methods=['GET'])
 def search_plants():
-    # Implement search functionality based on user input
-    # Dummy implementation, returning all plants for now
-    return render_template('search_results.html', results=plants)
+    query = request.args.get('query', '').lower()
+    results = [plant for plant in plants if query in plant['species'].lower()]
+    return render_template('search_results.html', results=results)
 
 def save_data():
     with open('plants.json', 'w') as file:
