@@ -1,0 +1,41 @@
+[TESTS]
+import unittest
+import requests
+import cv2
+import numpy as np
+from facefilter import FaceFilter
+from flask import Flask, request, render_template
+from io import BytesIO
+from PIL import Image
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = Flask(__name__)
+        self.app.config['SECRET_KEY'] = 'test'
+        self.client = self.app.test_client()
+
+    def tearDown(self):
+        pass
+
+    def test_upload(self):
+        with open('image.jpg', 'rb') as f:
+            image = f.read()
+        response = self.client.post('/upload', data={'image': (BytesIO(image), 'image.jpg')})
+        self.assertEqual(response.status_code, 200)
+
+    def test_apply(self):
+        with open('image.jpg', 'rb') as f:
+            image = f.read()
+        response = self.client.post('/apply', data={'image': (BytesIO(image), 'image.jpg')})
+        self.assertEqual(response.status_code, 200)
+
+    def test_display(self):
+        with open('image.jpg', 'rb') as f:
+            image = f.read()
+        response = self.client.get('/display')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'image.jpg', response.data)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

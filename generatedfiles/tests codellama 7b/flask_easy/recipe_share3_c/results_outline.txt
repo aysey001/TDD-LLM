@@ -1,0 +1,13 @@
+[LIST]
+1. Import Necessary Modules: Import `flask` for web application framework and `json` for data storage.
+2. Initialize Flask App: Create a Flask application instance and configure it to use `json` as the templating engine.
+3. Define Data Structure: Define a simple JSON data structure to store recipes with their details: name, description, tools, ingredients, and extras.
+4. Route for Home Page: Create a route (`/`) for the home page which displays a welcome message and links to other functionalities.
+5. Route for Adding Recipes: Create a route (`/add_recipe`) for adding new recipes. Collect recipe details from the user via a form submission, including name, description, tools, ingredients, and extras. Handle form submission to add the recipe to the data structure.
+6. Route for Deleting Recipes: Create a route (`/delete_recipe/<recipe_id>`) for deleting recipes. Display a confirmation message and handle the deletion process.
+7. Route for Searching Recipes: Create a route (`/search`) for searching recipes based on name or ingredients (without amount). Display matching recipes.
+8. Route for Viewing Recipes: Create a route (`/view_recipes`) for viewing all recipes along with their details. Render this information dynamically using Jinja2 templates.
+9. Route for Updating Recipes: Create a route (`/update_recipe/<recipe_id>`) for updating recipes. Collect recipe details from the user via a form submission and handle the update process.
+10. Save Data: Write functions to load and save recipe data to a JSON file.
+11. Main Function: Define a main function to run the Flask application.
+[/LIST]

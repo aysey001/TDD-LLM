@@ -1,0 +1,8 @@
+[LIST]
+1. Import Necessary Modules: Import Flask and OpenCV modules for image processing.
+2. Define Routes: Define routes for uploading an image and applying a filter.
+3. Define Filter Functions: Define functions for applying "comic" and "beautiful" filters using OpenCV functions.
+4. Load and Save Images: Load and save images using Flask's file upload and download functions.
+5. Display Image: Display the filtered image on the website using Flask's template engine.
+6. Main Function: Define a main function to run the Flask application.
+[/LIST]

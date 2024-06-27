@@ -1,0 +1,8 @@
+[LIST]
+1. Import Necessary Libraries: Import Flask and its related libraries for web development.
+2. Define App and Routes: Define a Flask app and routes for uploading images and applying filters.
+3. Upload Image Function: Define a function to upload an image and save it in a temporary directory.
+4. Apply Filter Functions: Define functions to apply filters on the uploaded image using the "funnyfilter.filters"-library.
+5. Display Result Function: Define a function to display the resultant image on the website.
+6. Main Function: Define a main function to run the Flask app.
+[/LIST]

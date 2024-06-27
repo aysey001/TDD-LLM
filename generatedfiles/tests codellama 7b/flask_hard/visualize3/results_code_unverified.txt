@@ -1,0 +1,75 @@
+[PYTHON]
+from flask import Flask, render_template, request, redirect, url_for
+import json
+import os
+from plant import Plant
+from visualization import bar_chart, pie_chart, table
+
+app = Flask(__name__)
+
+plants = []
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/plants')
+def view_plants():
+    return render_template('plants.html', plants=plants)
+
+@app.route('/add_plant', methods=['GET', 'POST'])
+def add_plant():
+    if request.method == 'POST':
+        # Add the plant to the data structure
+        plant = Plant(request.form['species'], request.form['watering_schedule'], request.form['sunlight_requirements'], request.form['notes'])
+        plants.append(plant)
+        save_data()
+        # Redirect to the plants page
+        return redirect(url_for('view_plants'))
+    else:
+        return render_template('add_plant.html')
+
+@app.route('/delete_plant/<int:plant_id>')
+def delete_plant(plant_id):
+    if 0 <= plant_id < len(plants):
+        del plants[plant_id]
+        save_data()
+    # Redirect to the plants page
+    return redirect(url_for('view_plants'))
+
+@app.route('/visualization')
+def visualization():
+    return render_template('visualization.html', plants=plants)
+
+@app.route('/download')
+def download():
+    return render_template('download.html')
+
+@app.route('/bar_chart')
+def bar_chart():
+    return render_template('bar_chart.html', plants=plants)
+
+@app.route('/pie_chart')
+def pie_chart():
+    return render_template('pie_chart.html', plants=plants)
+
+@app.route('/table')
+def table():
+    return render_template('table.html', plants=plants)
+
+def save_data():
+    with open('plants.json', 'w') as file:
+        json.dump(plants, file)
+
+def load_data():
+    global plants
+    if os.path.exists('plants.json'):
+        with open('plants.json', 'r') as file:
+            plants = json.load(file)
+    else:
+        plants = []
+
+if __name__ == '__main__':
+    load_data()
+    app.run(debug=True)
+[/PYTHON]

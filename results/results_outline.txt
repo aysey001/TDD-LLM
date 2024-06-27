@@ -1,13 +1,13 @@
 [LIST]
-1. Import Necessary Modules: Import Flask and its extensions (e.g., Flask-Bootstrap) for web development and web framework, and Flask-JSON for handling JSON data.
-2. Initialize Flask App: Create an instance of Flask app and set its template directory and static directory.
-3. Define Data Structure: Define a data structure for recipes with name, description, tools, ingredients, extras, and a list for each.
-4. Route for Home Page: Create a route for home page (`/`) which displays welcome message and links to recipe search and add new recipe page.
-5. Route for Recipe Search: Create a route for recipe search page (`/recipes`) which displays a search bar and a list of recipes based on user search query.
-6. Route for Adding Recipes: Create a route for adding new recipe page (`/add-recipe`) which displays a form for adding new recipe with fields for recipe name, description, tools, ingredients, extras, and submit button.
-7. Route for Editing Recipes: Create a route for editing recipe page (`/edit-recipe/<recipe_id>`) which displays a form for editing recipe with fields for recipe name, description, tools, ingredients, extras, and submit button.
-8. Route for Deleting Recipes: Create a route for deleting recipe page (`/delete-recipe/<recipe_id>`) which displays confirmation message and handles recipe deletion.
-9. Route for Recipe Details: Create a route for recipe details page (`/recipe-details/<recipe_id>`) which displays recipe details with recipe name, description, tools, ingredients, extras, and submit button.
-10. Save Data: Write functions to load and save recipe data to JSON file.
-11. Main Function: Define main function to run Flask app.
+1. create_network() # create a network diagram with nodes and edges
+2. create_nodes() # create nodes with different properties like IP address, port, and OS
+3. create_edges() # create edges between nodes with different properties like firewall and encryption
+4. create_security() # create AI security systems with different properties like threat level and attack strength
+5. create_tools() # create hacking tools with different properties like brute force and social engineering
+6. create_conspiracy() # create a conspiracy hidden in the depths of cyberspace with different properties like secret and importance
+7. create_fortress() # create a fortress with different properties like security level and vulnerabilities
+8. create_data() # create data with different properties like sensitivity and importance
+9. create_player() # create a player with different properties like hacking skills and intelligence
+10. create_game() # create a game with different properties like difficulty level and timer
+11. main() # use all the above functions to create a game where player can infiltrate secure servers, dodge firewalls, crack encryption, and unravel secrets. Player can also manage hacking tools and outsmart AI security.
 [/LIST]

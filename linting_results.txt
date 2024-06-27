@@ -1,4 +1,9 @@
+************* Module tmp64cfbz0t
+C:\Users\seyhan\AppData\Local\Temp\tmp64cfbz0t:34:15: E0602: Undefined variable 'redirect' (undefined-variable)
+C:\Users\seyhan\AppData\Local\Temp\tmp64cfbz0t:34:24: E0602: Undefined variable 'url_for' (undefined-variable)
+C:\Users\seyhan\AppData\Local\Temp\tmp64cfbz0t:45:11: E0602: Undefined variable 'redirect' (undefined-variable)
+C:\Users\seyhan\AppData\Local\Temp\tmp64cfbz0t:45:20: E0602: Undefined variable 'url_for' (undefined-variable)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 5.00/10
 

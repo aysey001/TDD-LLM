@@ -1,0 +1,10 @@
+player input 2 numbers
+random operation
+player guess operation
+tries system
+score system
+game over
+
+1 3/6
+2 1/6
+3 4/6 +0

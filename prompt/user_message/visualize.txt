@@ -1,0 +1,5 @@
+[INST]
+This webapplication loads a dataset from a .csv-file from storage.
+The user can select the data-visualization in the frontend: barchart, table or piechart.
+The flask-backend provides the requested visualization as an image in a new page.
+[/INST]

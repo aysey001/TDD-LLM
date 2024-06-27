@@ -10,5 +10,3 @@ The main page should also have the option to add or delete any question.
 Every question should get its own page with the full details including the answers.
 If the user presses an answer a message with true/false is displayed.
 [/INST]
-
-

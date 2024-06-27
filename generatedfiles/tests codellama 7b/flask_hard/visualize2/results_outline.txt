@@ -1,0 +1,11 @@
+[LIST]
+1. Import Necessary Libraries: Import necessary libraries like `flask`, `pandas`, and `matplotlib` for data manipulation and visualization respectively.
+2. Load Dataset: Load the dataset from the `.csv` file using `pandas` library and store it in a variable.
+3. Define Data Visualization Functions: Define functions to create different types of visualizations like barchart, table, and piechart using `matplotlib` library. These functions should take the dataset and return the visualization as an image.
+4. Create Endpoint for Visualization: Create an endpoint (`/visualize`) to receive the data visualization request from the frontend.
+5. Handle Data Visualization: Handle the data visualization request in the backend and return the visualization image as an attachment in the response.
+6. Create Frontend: Create a frontend using HTML, CSS, and JavaScript that allows the user to select the data visualization type and sends the request to the backend.
+7. Deploy Application: Deploy the application using a web server like `gunicorn` and `nginx`.
+8. Test Application: Test the application to ensure it works correctly and fix any bugs.
+9. Main Function: Define a main function to run the Flask application.
+[/LIST]

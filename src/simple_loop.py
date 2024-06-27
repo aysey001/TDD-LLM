@@ -6,14 +6,12 @@ from prompthandle.tagHandler import tagHandler
 from prompthandle.promptbuilder import get_prompt
 from prompthandle.fileaccess import read_file, write_file
 
-
-
 ## prepare
 # settings
 entry_point = "new"
-stop_point = ""
-example_type = "flaskr"
-user_message_path = "prompt//user_message//recipe_share.txt"
+stop_point = "outline"
+example_type = "console_app"
+user_message_path = "prompt//user_message//text_game.txt"
 # connect to llm
 llm = ChatOpenAI(openai_api_key="not needed", openai_api_base="http://localhost:8000/v1")
 

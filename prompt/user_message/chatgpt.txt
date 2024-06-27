@@ -1,0 +1,4 @@
+[INST]
+Build a console-based ChatGPT-like Client using the OpenAi-Library. 
+Leave the API-Key as an empty string.
+[/INST]

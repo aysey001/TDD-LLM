@@ -1,0 +1,9 @@
+[INST]
+This is a textbase-console game.
+Description:
+You're a hacker navigating through a virtual world of interconnected networks. 
+Your mission: infiltrate secure servers, dodge firewalls, crack encryption, and unravel secrets—all while staying one step ahead of the system's defenses. 
+Manage hacking tools, outsmart AI security, and uncover a conspiracy hidden in the depths of cyberspace. 
+Can you breach the fortress, retrieve crucial data, and escape undetected?
+[/INST]
+

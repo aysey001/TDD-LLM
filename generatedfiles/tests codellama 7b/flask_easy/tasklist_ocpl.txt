@@ -1,0 +1,21 @@
+webapp -> launch
+    title
+    description
+    4 answers
+    4 bools 
+add question
+delete question
+show question by ID
+show all
+answer multiple choice
+
+1 10/10 +1
+2 9/10 +0
+3 10/10 +0
+
+change string to bool
+tasks = add answer question
+fix import
+
+fix import
+change answer

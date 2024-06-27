@@ -1,0 +1,10 @@
+[LIST]
+1. Import Libraries: Import necessary libraries such as `flask`, `requests`, `cv2`, `numpy`, and `facefilter` for image processing and face detection.
+2. Define Functions: Define functions for applying filters on an image using OpenCV and face detection using FaceFilter library.
+3. Route for Uploading Image: Create a route for uploading an image (`/upload`) and processing it using Flask's `request` object.
+4. Route for Applying Filter: Create a route for applying filter (`/apply`) and processing it using Flask's `request` object.
+5. Route for Displaying Image: Create a route for displaying image (`/display`) and rendering it using Flask's `render_template` function.
+6. Main Function: Define a main function to run the Flask application.
+7. Run Flask App: Run the Flask application using `flask run` command.
+8. Test App: Test the application by uploading an image and applying filter using the app's interface.
+[/LIST]

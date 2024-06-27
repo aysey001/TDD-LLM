@@ -1,0 +1,77 @@
+[PYTHON]
+from flask import Flask, render_template, request, jsonify, session
+from flask_socketio import SocketIO, emit
+import json
+import os
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret'
+socketio = SocketIO(app)
+
+plants = []
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/plants')
+def view_plants():
+    return render_template('plants.html', plants=plants)
+
+@app.route('/add_plant', methods=['GET', 'POST'])
+def add_plant():
+    if request.method == 'POST':
+        # Add the plant to the data structure
+        plant = {
+            'species': request.form['species'],
+            'watering_schedule': request.form['watering_schedule'],
+            'sunlight_requirements': request.form['sunlight_requirements'],
+            'notes': request.form['notes']
+        }
+        plants.append(plant)
+        # Emit an event with the new plant data
+        socketio.emit('plant_added', plant, namespace='/test')
+        return redirect(url_for('view_plants'))
+    else:
+        return render_template('add_plant.html')
+
+@app.route('/delete_plant/<int:plant_id>')
+def delete_plant(plant_id):
+    if 0 <= plant_id < len(plants):
+        del plants[plant_id]
+        # Emit an event with the plant ID that was deleted
+        socketio.emit('plant_deleted', plant_id, namespace='/test')
+    # Redirect to the plants page
+    return redirect(url_for('view_plants'))
+
+@socketio.on('connect', namespace='/test')
+def connect():
+    print('Client connected')
+
+@socketio.on('disconnect', namespace='/test')
+def disconnect():
+    print('Client disconnected')
+
+@socketio.on('plant_added', namespace='/test')
+def plant_added(plant):
+    print(f'New plant added: {plant}')
+    # Add the plant to the plants list in memory
+    plants.append(plant)
+    # Render the new plant in the plants template
+    html = render_template('plant.html', plant=plant)
+    # Emit an event with the plant's HTML as payload
+    socketio.emit('plant_added', html, namespace='/test')
+
+@socketio.on('plant_deleted', namespace='/test')
+def plant_deleted(plant_id):
+    print(f'Plant {plant_id} deleted')
+    # Remove the plant from the plants list in memory
+    del plants[plant_id]
+    # Render the plants template without the deleted plant
+    html = render_template('plants.html', plants=plants)
+    # Emit an event with the plants HTML as payload
+    socketio.emit('plants', html, namespace='/test')
+
+if __name__ == '__main__':
+    socketio.run(app)
+[/PYTHON]

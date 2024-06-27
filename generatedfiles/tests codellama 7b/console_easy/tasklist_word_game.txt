@@ -1,0 +1,12 @@
+use "Player 1:"
+input 3 sentences
+check word count
+select random word
+print it as *
+player 2 guesses
+lifepoints
+max 2 lifepoints
+
+1 2/9 +0
+2 4/9 +0
+3 2/9 +0

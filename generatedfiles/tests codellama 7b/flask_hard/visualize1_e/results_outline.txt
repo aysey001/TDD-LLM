@@ -1,0 +1,11 @@
+[LIST]
+1. Import Necessary Libraries: Import necessary libraries like `pandas` for data manipulation and analysis, `flask` for web application framework, `matplotlib` for data visualization, and `os` for file handling.
+2. Load Dataset: Load dataset from `.csv` file stored in the application directory.
+3. Define Functions: Define functions that handle data manipulation and visualization tasks. For example, `create_barchart`, `create_table`, and `create_piechart` functions that create respective visualizations based on selected data-visualization type.
+4. Route for Home Page: Create a route for the home page (`/`) which displays a welcome message and links to other functionalities.
+5. Route for Data Visualization: Create routes for data visualization (`/barchart`, `/table`, and `/piechart`) that render respective visualizations using `matplotlib`.
+6. Route for Data Selection: Create a route for data selection (`/select`) that displays a form for user input and handles data selection based on user input.
+7. Route for Image Display: Create a route for image display (`/image`) that displays the requested visualization image in a new page.
+8. Main Function: Define a main function to run the Flask application.
+9. Save Data: Write functions to save user input and selected data to a `.csv` file in the application directory.
+[/LIST]

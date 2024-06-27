@@ -1,0 +1,9 @@
+load words from textfile
+diplay random word
+start a timer,wait for input
+check answer
+if fails -> gameover
+
+1 4/5 +0
+2 5/5 +0
+3 5/5 +1

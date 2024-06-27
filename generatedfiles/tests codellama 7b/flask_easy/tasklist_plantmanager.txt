@@ -1,0 +1,15 @@
+
+    species
+    watering schedules
+    sunlight req
+    notes
+show all plants
+delete
+add 
+search
+by criteria
+
+1 7/9 +2
+2 9/9 +1
+3 8/9 +1
+

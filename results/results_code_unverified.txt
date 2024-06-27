@@ -1,0 +1,44 @@
+[PYTHON]
+import unittest
+from Game import Game
+
+class TestGame(unittest.TestCase):
+    def setUp(self):
+        self.game = Game()
+
+    def test_create_game(self):
+        self.assertIsInstance(self.game, Game)
+
+    def test_game_overview(self):
+        self.assertEqual(self.game.game_overview, "The game is text-based and takes place in a virtual world where the player must infiltrate secure servers and dodge firewalls to retrieve crucial data and uncover a conspiracy.")
+
+    def test_gameplay(self):
+        self.assertEqual(self.game.gameplay, "The game takes place in several levels, each with its own unique challenges and objectives.")
+
+    def test_mechanics(self):
+        self.assertEqual(self.game.mechanics, "The game features various mechanics, including resource management, hacking tools management, and stealth tactics.")
+
+    def test_storyline(self):
+        self.assertEqual(self.game.storyline, "The game's storyline revolves around a conspiracy hidden in the depths of cyberspace that requires players to infiltrate secure servers and dodge firewalls to uncover the truth.")
+
+    def test_art_and_audio(self):
+        self.assertEqual(self.game.art_and_audio, "The game features colorful and detailed graphics and audio, including sound effects and music that enhance the game's immersive atmosphere.")
+
+    def test_controls(self):
+        self.assertEqual(self.game.controls, "The game's controls are intuitive and easy to use, with players able to navigate through the game's levels and interact with objects using simple keyboard and mouse commands.")
+
+    def test_replayability(self):
+        self.assertEqual(self.game.replayability, "The game features various difficulty levels and challenges that players can complete to unlock new items and abilities.")
+
+    def test_multiplayer(self):
+        self.assertEqual(self.game.multiplayer, "The game features multiplayer modes that allow players to compete against each other in various challenges and game modes.")
+
+    def test_reviews(self):
+        self.assertEqual(self.game.reviews, "The game has received positive reviews for its immersive atmosphere, engaging gameplay, and addictive mechanics.")
+
+    def test_awards(self):
+        self.assertEqual(self.game.awards, "The game has received various awards for its innovative gameplay mechanics and immersive atmosphere.")
+
+if __name__ == '__main__':
+    unittest.main()
+[/PYTHON]

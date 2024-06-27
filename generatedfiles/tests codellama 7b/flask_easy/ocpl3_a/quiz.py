@@ -1,0 +1,69 @@
+from flask import Flask, render_template, request, redirect, url_for
+import json
+import os
+
+app = Flask(__name__)
+
+questions = []
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/questions')
+def view_questions():
+    return render_template('questions.html', questions=questions)
+
+@app.route('/add_question', methods=['GET', 'POST'])
+def add_question():
+    if request.method == 'POST':
+        # Add the question to the data structure
+        question = {
+            'title': request.form['title'],
+            'description': request.form['description'],
+            'options': request.form['options'].split(','),
+            'booleans': [bool(x) for x in request.form['booleans'].split(',')],
+            'selected': None
+        }
+        questions.append(question)
+        save_data()
+        # Redirect to the questions page
+        return redirect(url_for('view_questions'))
+    else:
+        return render_template('add_question.html')
+
+@app.route('/delete_question/<int:question_id>')
+def delete_question(question_id):
+    if 0 <= question_id < len(questions):
+        del questions[question_id]
+        save_data()
+    # Redirect to the questions page
+    return redirect(url_for('view_questions'))
+
+@app.route('/question/<int:question_id>')
+def view_question(question_id):
+    return render_template('question.html', question=questions[question_id])
+
+@app.route('/submit_answer/<int:question_id>/<int:option_id>')
+def submit_answer(question_id, option_id):
+    if 0 <= question_id < len(questions):
+        questions[question_id]['selected'] = option_id
+        save_data()
+    # Redirect to the questions page
+    return redirect(url_for('view_question', question_id=question_id))
+
+def save_data():
+    with open('questions.json', 'w') as file:
+        json.dump(questions, file)
+
+def load_data():
+    global questions
+    if os.path.exists('questions.json'):
+        with open('questions.json', 'r') as file:
+            questions = json.load(file)
+    else:
+        questions = []
+
+if __name__ == '__main__':
+    load_data()
+    app.run(debug=True)

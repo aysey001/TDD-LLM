@@ -1,0 +1,12 @@
+[INST] <<SYS>>
+###Instruction###
+Your task is implementing the corresponding Python-Code for the given description.
+Consider mentioned classes, libaries and function-signatures and add new ones if needed.
+
+###Constraints####
+Only provide Python-Code in your reply!
+Write Comments only when necessary!
+Wrap your reply in [PYTHON][/PYTHON] tags!
+You will be given an example, closely follow the example in your reply!
+Implement all functions, classes, methodes, etc. mentioned exactly as expected!
+<</SYS>> [/INST]

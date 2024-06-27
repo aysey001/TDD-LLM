@@ -1,0 +1,125 @@
+import unittest
+import Game
+
+class TestGame(unittest.TestCase):
+
+    def test_create_game(self):
+        game = Game("Test Game", "This is a test game")
+        self.assertIsInstance(game, Game)
+        self.assertEqual(game.name, "Test Game")
+        self.assertEqual(game.description, "This is a test game")
+
+    def test_display_description(self):
+        game = Game("Test Game", "This is a test game")
+        description = game.display_description()
+        self.assertEqual(description, "This is a test game")
+
+    def test_start_game(self):
+        game = Game("Test Game", "This is a test game")
+        game.start()
+        self.assertEqual(game.game_state, "in-progress")
+
+    def test_end_game(self):
+        game = Game("Test Game", "This is a test game")
+        game.end()
+        self.assertEqual(game.game_state, "completed")
+
+    def test_display_options(self):
+        game = Game("Test Game", "This is a test game")
+        options = game.display_options()
+        self.assertIsInstance(options, list)
+        self.assertEqual(len(options), 2)
+        self.assertIn("Start Game", options)
+        self.assertIn("Quit Game", options)
+
+    def test_display_instructions(self):
+        game = Game("Test Game", "This is a test game")
+        instructions = game.display_instructions()
+        self.assertIsInstance(instructions, str)
+        self.assertTrue(instructions.startswith("Welcome to"))
+
+    def test_display_score(self):
+        game = Game("Test Game", "This is a test game")
+        score = game.display_score()
+        self.assertIsInstance(score, int)
+        self.assertEqual(score, 0)
+
+    def test_display_high_score(self):
+        game = Game("Test Game", "This is a test game")
+        high_score = game.display_high_score()
+        self.assertIsInstance(high_score, int)
+        self.assertEqual(high_score, 0)
+
+    def test_display_leaderboard(self):
+        game = Game("Test Game", "This is a test game")
+        leaderboard = game.display_leaderboard()
+        self.assertIsInstance(leaderboard, dict)
+        self.assertEqual(len(leaderboard), 0)
+
+    def test_display_achievements(self):
+        game = Game("Test Game", "This is a test game")
+        achievements = game.display_achievements()
+        self.assertIsInstance(achievements, list)
+        self.assertEqual(len(achievements), 0)
+
+    def test_display_tutorials(self):
+        game = Game("Test Game", "This is a test game")
+        tutorials = game.display_tutorials()
+        self.assertIsInstance(tutorials, list)
+        self.assertEqual(len(tutorials), 0)
+
+    def test_display_credits(self):
+        game = Game("Test Game", "This is a test game")
+        credits = game.display_credits()
+        self.assertIsInstance(credits, str)
+        self.assertTrue(credits.startswith("Game Developed By"))
+
+    def test_display_exit_message(self):
+        game = Game("Test Game", "This is a test game")
+        exit_message = game.display_exit_message()
+        self.assertIsInstance(exit_message, str)
+        self.assertTrue(exit_message.startswith("Thank you for playing"))
+
+    def test_handle_user_input(self):
+        game = Game("Test Game", "This is a test game")
+        user_input = "Start Game"
+        game.handle_user_input(user_input)
+        self.assertEqual(game.game_state, "in-progress")
+
+    def test_validate_user_input(self):
+        game = Game("Test Game", "This is a test game")
+        user_input = "Start Game"
+        self.assertTrue(game.validate_user_input(user_input))
+        user_input = "Quit Game"
+        self.assertTrue(game.validate_user_input(user_input))
+        user_input = "Invalid Input"
+        self.assertFalse(game.validate_user_input(user_input))
+
+    def test_display_menu(self):
+        game = Game("Test Game", "This is a test game")
+        menu = game.display_menu()
+        self.assertIsInstance(menu, str)
+        self.assertTrue(menu.startswith("Welcome to"))
+
+    def test_handle_game_logic(self):
+        game = Game("Test Game", "This is a test game")
+        game.handle_game_logic()
+        self.assertEqual(game.game_state, "in-progress")
+
+    def test_handle_game_state(self):
+        game = Game("Test Game", "This is a test game")
+        game.handle_game_state()
+        self.assertEqual(game.game_state, "completed")
+
+    def test_handle_game_events(self):
+        game = Game("Test Game", "This is a test game")
+        game.handle_game_events()
+        self.assertEqual(game.game_state, "completed")
+
+    def test_handle_game_interactions(self):
+        game = Game("Test Game", "This is a test game")
+        game.handle_game_interactions()
+        self.assertEqual(game.game_state, "completed")
+
+if __name__ == '__main__':
+    unittest.main()

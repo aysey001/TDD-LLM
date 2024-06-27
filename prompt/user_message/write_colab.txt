@@ -1,0 +1,5 @@
+[INST]
+This is a collaborative webapplication. 
+Websockets to create a textbox, where every user can write simulanously.
+This should have all standard-features of any webapplication, including a username system (no login or encryption).
+[/INST]

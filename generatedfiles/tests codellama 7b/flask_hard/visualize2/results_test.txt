@@ -1,0 +1,60 @@
+[TESTS]
+import unittest
+from unittest.mock import patch
+import pandas as pd
+import matplotlib.pyplot as plt  # Import the libraries
+import data_visualization  # Import the Flask app
+
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.data = pd.read_csv('data/data.csv')  # Load dataset
+        self.app = data_visualization.app.test_client()  # Create test client
+        self.temp_db_fd, data_visualization.app.config['DATABASE'] = tempfile.mkstemp()  # Set up temporary database file
+        data_visualization.app.config['TESTING'] = True  # Set up testing mode
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)  # Close temporary database file
+        os.unlink(data_visualization.app.config['DATABASE'])  # Remove temporary database file
+
+    def test_load_data(self):
+        with patch('pandas.read_csv', return_value=self.data) as mock_read_csv:  # Mock read_csv function
+            data_visualization.load_data()  # Load data
+            mock_read_csv.assert_called_once_with('data/data.csv')  # Assert that read_csv was called once with correct argument
+            self.assertEqual(data_visualization.data, self.data)  # Assert that data is equal to loaded data
+
+    def test_load_data_no_file(self):
+        os.unlink(data_visualization.app.config['DATABASE'])  # Remove temporary database file
+        data_visualization.load_data()  # Load data
+        self.assertEqual(data_visualization.data, pd.DataFrame())  # Assert that data is empty if file not found
+
+    def test_visualize_get(self):
+        response = self.app.get('/visualize')  # Send GET request
+        self.assertEqual(response.status_code, 200)  # Assert that response status code is 200
+        self.assertIn(b'Select Visualization Type', response.data)  # Assert that response data contains select visualization type message
+
+    def test_visualize_post(self):
+        response = self.app.post('/visualize', data={'visualization': 'barchart'})  # Send POST request with visualization type as barchart
+        self.assertEqual(response.status_code, 200)  # Assert that response status code is 200
+        self.assertIn(b'Bar Chart', response.data)  # Assert that response data contains bar chart message
+        self.assertIn(b'png', response.data)  # Assert that response data contains png image type
+        with open('tests/test_data/barchart.png', 'rb') as file:  # Open test bar chart image file in binary mode
+            self.assertEqual(response.data, file.read())  # Assert that response data matches test bar chart image file data
+
+    def test_visualize_post_no_visualization(self):
+        response = self.app.post('/visualize', data={})  # Send POST request with no visualization type
+        self.assertEqual(response.status_code, 400)  # Assert that response status code is 400
+        self.assertIn(b'Select Visualization Type', response.data)  # Assert that response data contains select visualization type message
+
+    def test_visualize_post_invalid_visualization(self):
+        response = self.app.post('/visualize', data={'visualization': 'invalid'})  # Send POST request with invalid visualization type
+        self.assertEqual(response.status_code, 400)  # Assert that response status code is 400
+        self.assertIn(b'Select Visualization Type', response.data)  # Assert that response data contains select visualization type message
+
+    def test_main(self):
+        data_visualization.main()  # Run main function
+        self.assertEqual(data_visualization.app, data_visualization.app)  # Assert that app is equal to itself
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

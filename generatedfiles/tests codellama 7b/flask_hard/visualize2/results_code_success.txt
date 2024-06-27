@@ -1,0 +1,98 @@
+[PYTHON]
+from flask import Flask, render_template, request, redirect, url_for
+import pandas as pd  # Import libraries
+import matplotlib.pyplot as plt
+import json  # Import libraries
+import os
+import base64  # Import libraries
+from io import BytesIO  # Import libraries
+import numpy as np  # Import libraries
+import seaborn as sns  # Import libraries
+
+app = Flask(__name__)  # Create Flask app
+app.config['JSON_AS_ASCII'] = False  # Set configuration variable
+plants = []  # Create empty list to store plants
+
+@app.route('/')  # Define route for home page
+def home():  # Define function for home page
+    return render_template('home.html')  # Render template
+
+@app.route('/plants')  # Define route for plants page
+def view_plants():  # Define function for plants page
+    return render_template('plants.html', plants=plants)  # Render template
+
+@app.route('/add_plant', methods=['GET', 'POST'])  # Define route for adding a plant
+def add_plant():  # Define function for adding a plant
+    if request.method == 'POST':  # If request method is POST
+        plant = {  # Create plant dictionary
+            'species': request.form['species'],  # Get species from form
+            'watering_schedule': request.form['watering_schedule'],  # Get watering schedule from form
+            'sunlight_requirements': request.form['sunlight_requirements'],  # Get sunlight requirements from form
+            'notes': request.form['notes']  # Get notes from form
+        }
+        plants.append(plant)  # Add plant to list of plants
+        save_data()  # Save data to file
+        return redirect(url_for('view_plants'))  # Redirect to plants page
+    else:  # If request method is GET
+        return render_template('add_plant.html')  # Render template
+
+@app.route('/delete_plant/<int:plant_id>')  # Define route for deleting a plant
+def delete_plant(plant_id):  # Define function for deleting a plant
+    if 0 <= plant_id < len(plants):  # If plant ID is valid
+        del plants[plant_id]  # Delete plant from list of plants
+        save_data()  # Save data to file
+    return redirect(url_for('view_plants'))  # Redirect to plants page
+
+@app.route('/search', methods=['GET'])  # Define route for searching plants
+def search_plants():  # Define function for searching plants
+    query = request.args.get('query', '').lower()  # Get query from form and convert to lowercase
+    results = [plant for plant in plants if query in plant['species'].lower()]  # Find plants with matching species
+    return render_template('search_results.html', results=results)  # Render template with results
+
+@app.route('/visualize', methods=['GET', 'POST'])  # Define route for visualizing data
+def visualize():  # Define function for visualizing data
+    if request.method == 'POST':  # If request method is POST
+        visualization = request.form['visualization']  # Get visualization type from form
+        if visualization == 'barchart':  # If visualization type is barchart
+            fig, ax = plt.subplots()  # Create figure and axis object
+            ax.bar(plants['species'], plants['watering_schedule'])  # Create bar chart with species on x-axis and watering schedule on y-axis
+            plt.title('Watering Schedule by Species')  # Set title of chart
+            plt.xlabel('Species')  # Set x-axis label
+            plt.ylabel('Watering Schedule')  # Set y-axis label
+            plt.show()  # Display chart
+            fig.savefig('barchart.png')  # Save chart as png image
+            with open('barchart.png', 'rb') as file:  # Open png image file in binary mode
+                b64 = base64.b64encode(file.read())  # Read image file and encode as base64
+            return redirect(url_for('view_plants', b64=b64))  # Redirect with base64 encoded image as query parameter
+        elif visualization == 'scatterplot':  # If visualization type is scatterplot
+            fig, ax = plt.subplots()  # Create figure and axis object
+            ax.scatter(plants['species'], plants['sunlight_requirements'])  # Create scatterplot with species on x-axis and sunlight requirements on y-axis
+            plt.title('Sunlight Requirements by Species')  # Set title of chart
+            plt.xlabel('Species')  # Set x-axis label
+            plt.ylabel('Sunlight Requirements')  # Set y-axis label
+            plt.show()  # Display chart
+            fig.savefig('scatterplot.png')  # Save chart as png image
+            with open('scatterplot.png', 'rb') as file:  # Open png image file in binary mode
+                b64 = base64.b64encode(file.read())  # Read image file and encode as base64
+            return redirect(url_for('view_plants', b64=b64))  # Redirect with base64 encoded image as query parameter
+        else:  # If visualization type is not barchart or scatterplot
+            return render_template('visualize.html', visualization=visualization)  # Render template with visualization type
+    else:  # If request method is GET
+        return render_template('visualize.html')  # Render template with blank visualization type
+
+def save_data():  # Define function to save data to file
+    with open('plants.json', 'w') as file:  # Open file in write mode
+        json.dump(plants, file)  # Dump plants list to file
+
+def load_data():  # Define function to load data from file
+    global plants  # Set plants to global variable
+    if os.path.exists('plants.json'):  # If plants data file exists
+        with open('plants.json', 'r') as file:  # Open file in read mode
+            plants = json.load(file)  # Load plants list from file
+    else:  # If plants data file does not exist
+        plants = []  # Set plants list to empty list
+
+if __name__ == '__main__':  # If running as main module
+    load_data()  # Load data from file
+    app.run(debug=True)  # Run Flask app in debug mode
+[/PYTHON]

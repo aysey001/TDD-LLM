@@ -1,0 +1,64 @@
+[PYTHON]
+from flask import Flask, render_template, request, redirect, url_for
+import json
+import os
+
+app = Flask(__name__)
+
+plants = []
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/plants')
+def view_plants():
+    return render_template('plants.html', plants=plants)
+
+@app.route('/add_plant', methods=['GET', 'POST'])
+def add_plant():
+    if request.method == 'POST':
+        # Add the plant to the data structure
+        plant = {
+            'species': request.form['species'],
+            'watering_schedule': request.form['watering_schedule'],
+            'sunlight_requirements': request.form['sunlight_requirements'],
+            'notes': request.form['notes']
+        }
+        plants.append(plant)
+        save_data()
+        # Redirect to the plants page
+        return redirect(url_for('view_plants'))
+    else:
+        return render_template('add_plant.html')
+
+@app.route('/delete_plant/<int:plant_id>')
+def delete_plant(plant_id):
+    if 0 <= plant_id < len(plants):
+        del plants[plant_id]
+        save_data()
+    # Redirect to the plants page
+    return redirect(url_for('view_plants'))
+
+@app.route('/search', methods=['GET'])
+def search_plants():
+    query = request.args.get('query', '').lower()
+    results = [plant for plant in plants if query in plant['species'].lower()]
+    return render_template('search_results.html', results=results)
+
+def save_data():
+    with open('plants.json', 'w') as file:
+        json.dump(plants, file)
+
+def load_data():
+    global plants
+    if os.path.exists('plants.json'):
+        with open('plants.json', 'r') as file:
+            plants = json.load(file)
+    else:
+        plants = []
+
+if __name__ == '__main__':
+    load_data()
+    app.run(debug=True)
+[/PYTHON]

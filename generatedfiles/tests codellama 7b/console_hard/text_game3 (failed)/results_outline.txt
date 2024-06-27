@@ -1,0 +1,17 @@
+[LIST]
+1. Initialize game variables (e.g. current network, current server, current tool, current encryption key)
+2. Implement network navigation (e.g. move between networks, connect to servers)
+3. Implement tool management (e.g. add/remove tools from inventory)
+4. Implement encryption key management (e.g. generate new keys, use existing keys)
+5. Implement AI security outsmarting (e.g. use stealth mode, avoid detection)
+6. Implement conspiracy uncovering (e.g. use social engineering, find hidden files)
+7. Implement data retrieval (e.g. access data from servers, databases)
+8. Implement escape (e.g. avoid detection, find way out)
+9. Implement game over scenario (e.g. detect by system, caught by authorities)
+10. Implement user interface (e.g. menu, input fields, output fields)
+11. Implement game logic (e.g. game loop, user input handling)
+12. Implement game AI (e.g. difficulty level, AI-generated enemies)
+13. Implement game mechanics (e.g. health system, level progression)
+14. Implement game graphics (e.g. 2D/3D graphics, animations)
+15. Implement game sound effects and music
+[/LIST]

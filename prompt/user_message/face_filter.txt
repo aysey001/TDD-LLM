@@ -1,0 +1,7 @@
+[INST]
+This is a website to apply face-filters for fun.
+A user can upload a picture from the pc to the website. and also select a filter: "comic" or "beautiful".
+When the user presses a button, it is send and the backend applies "comic_apply(img)" or "beautiful_apply(img)" to the image
+The return of those functions is the new image which is it sends back to the website to display.
+Assume the "comic_apply(img)" or "beautiful_apply(img)" functions are in the "funnyfilter.filters"-library
+[/INST]

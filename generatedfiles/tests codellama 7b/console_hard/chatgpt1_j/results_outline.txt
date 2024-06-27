@@ -1,0 +1,7 @@
+[LIST]
+1. Set up the OpenAi library and import the necessary modules
+2. Create a client object with an empty string for the API key
+3. Define a function that takes in a prompt and sends it to the client for generation
+4. Define a function that takes in the generated text and prints it out
+5. Create an interactive loop that allows the user to input prompts and receive generated text
+[/LIST]

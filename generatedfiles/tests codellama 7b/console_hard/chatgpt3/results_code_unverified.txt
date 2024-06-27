@@ -1,0 +1,27 @@
+[PYTHON]
+import unittest
+from typing import List, Dict, Any
+
+class TestOpenAi(unittest.TestCase):
+    def test_api_key(self):
+        api_key = APIKey("dummy_key")
+        self.assertEqual(api_key.key, "dummy_key")
+
+    def test_api_client(self):
+        api_client = APIClient("dummy_key")
+        self.assertIsInstance(api_client, APIClient)
+
+    def test_api_response(self):
+        response: APIResponse = APIResponse(
+            data={"dummy_data": "dummy_value"},
+            status_code=200,
+            headers={"Content-Type": "application/json"}
+        )
+        self.assertIsInstance(response, APIResponse)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "application/json")
+        self.assertEqual(response.data["dummy_data"], "dummy_value")
+
+if __name__ == '__main__':
+    unittest.main()
+[/PYTHON]

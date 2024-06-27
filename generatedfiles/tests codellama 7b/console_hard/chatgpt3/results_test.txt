@@ -1,0 +1,23 @@
+[TESTS]
+import unittest
+import OpenAi
+from OpenAi import APIKey, APIClient
+from OpenAi.APIClient import APIResponse
+
+class TestOpenAi(unittest.TestCase):
+
+    def test_api_key(self):
+        api_key = APIKey("")
+        self.assertEqual(api_key.key, "")
+
+    def test_api_client(self):
+        api_client = APIClient("")
+        self.assertIsInstance(api_client, APIClient)
+
+    def test_api_response(self):
+        response = APIResponse("")
+        self.assertIsInstance(response, APIResponse)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

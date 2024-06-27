@@ -1,0 +1,72 @@
+[TESTS]
+import unittest
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import plant  # Import the Flask app
+
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = plant.app.test_client()
+        self.temp_db_fd, plant.app.config['DATABASE'] = tempfile.mkstemp()
+        plant.app.config['TESTING'] = True
+        self.data = pd.read_csv('plants.csv')
+        self.data['species'] = self.data['species'].astype('category')
+        self.data['watering_schedule'] = self.data['watering_schedule'].astype('category')
+        self.data['sunlight_requirements'] = self.data['sunlight_requirements'].astype('category')
+        self.data['notes'] = self.data['notes'].astype('category')
+        self.data['id'] = range(1, len(self.data) + 1)
+        self.data['id'] = self.data['id'].astype(str)
+        self.data = self.data.set_index('id')
+        self.plants = self.data.to_dict(orient='index')
+        self.data.to_csv(plant.app.config['DATABASE'], index=False)
+
+    def tearDown(self):
+        os.close(self.temp_db_fd)
+        os.unlink(plant.app.config['DATABASE'])
+
+    def test_load_data(self):
+        with patch('builtins.open', return_value=open(plant.app.config['DATABASE'], 'r')) as mock_open:
+            plant.load_data()
+            mock_open.assert_called_once_with('plants.csv', 'r')
+            self.assertEqual(plant.plants, self.plants)
+
+    def test_home(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_visualization(self):
+        response = self.app.get('/visualization')
+        self.assertEqual(response.status_code, 200)
+
+    def test_download(self):
+        response = self.app.get('/download')
+        self.assertEqual(response.status_code, 200)
+
+    def test_bar_chart(self):
+        fig, ax = plt.subplots()
+        plant.bar_chart(self.data, ax)
+        self.assertEqual(len(ax.patches), self.data['species'].unique().shape[0])
+        self.assertEqual(ax.get_xlabel(), 'Species')
+        self.assertEqual(ax.get_ylabel(), 'Count')
+        self.assertEqual(ax.get_title(), 'Bar Chart')
+
+    def test_pie_chart(self):
+        fig, ax = plt.subplots()
+        plant.pie_chart(self.data, ax)
+        self.assertEqual(len(ax.patches), self.data['watering_schedule'].unique().shape[0])
+        self.assertEqual(ax.get_xlabel(), 'Watering Schedule')
+        self.assertEqual(ax.get_ylabel(), 'Count')
+        self.assertEqual(ax.get_title(), 'Pie Chart')
+
+    def test_table(self):
+        fig, ax = plt.subplots()
+        plant.table(self.data, ax)
+        self.assertEqual(ax.get_xlabel(), 'Species')
+        self.assertEqual(ax.get_ylabel(), 'Watering Schedule')
+        self.assertEqual(ax.get_title(), 'Table')
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]

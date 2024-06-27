@@ -1,0 +1,53 @@
+[TESTS]
+import unittest
+from flask import Flask, request, send_file
+import os
+import tempfile
+import base64
+import requests
+import json
+
+import image_filter  # Import the Flask app
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = image_filter.app.test_client()
+        self.temp_dir = tempfile.mkdtemp()
+        self.app.config['UPLOAD_FOLDER'] = self.temp_dir
+        self.app.config['TESTING'] = True
+
+    def tearDown(self):
+        os.rmdir(self.temp_dir)
+
+    def test_upload(self):
+        with open('tests/test.jpg', 'rb') as f:
+            data = f.read()
+        response = self.app.post('/upload', data=data, content_type='image/jpeg')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(os.path.exists(os.path.join(self.temp_dir, 'test.jpg')))
+
+    def test_apply_filter(self):
+        with open('tests/test.jpg', 'rb') as f:
+            data = f.read()
+        response = self.app.post('/apply/comic', data=data, content_type='image/jpeg')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(os.path.exists(os.path.join(self.temp_dir, 'comic_test.jpg')))
+
+    def test_display(self):
+        with open('tests/test.jpg', 'rb') as f:
+            data = f.read()
+        response = self.app.post('/display', data=data, content_type='image/jpeg')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data)
+
+    def test_apply_filter_no_image(self):
+        response = self.app.post('/apply/comic')
+        self.assertEqual(response.status_code, 400)
+
+    def test_display_no_image(self):
+        response = self.app.post('/display')
+        self.assertEqual(response.status_code, 400)
+
+if __name__ == '__main__':
+    unittest.main()
+[/TESTS]
