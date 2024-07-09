@@ -1,0 +1,54 @@
+[PYTHON]
+import os
+import time
+from collections import defaultdict
+
+class HangmanGame:
+    def __init__(self):
+        self.words = defaultdict(list)
+        self.load_words()
+        self.current_word = defaultdict(str)
+        self.score = 0
+        self.timer = None
+        self.lives = 6
+
+    def load_words(self):
+        path = os.path.join(os.path.dirname(__file__), "words.txt")
+        with open(path, "r") as f:
+            for line in f:
+                word, definition = line.strip().split(" - ")
+                self.words[word] = definition
+
+    def get_random_word(self):
+        return self.words.keys()
+
+    def display_random_word(self, word):
+        self.current_word["word"] = word
+        self.current_word["definition"] = self.words[word]
+        self.current_word["guess"] = ["_"] * len(word)
+        return self.current_word
+
+    def start_game(self):
+        self.timer = time.time()
+        self.score = 0
+        self.lives = 6
+        word = self.get_random_word()
+        self.display_random_word(word)
+        return self.current_word
+
+    def wait_for_input(self):
+        choice = input("Enter your guess: ")
+        return choice
+
+    def check_input(self, guess):
+        if guess in self.current_word["guess"]:
+            return True
+        return False
+
+    def update_score(self):
+        self.score += 1
+
+    def game_over(self):
+        self.timer = None
+        return self.current_word
+[/PYTHON]
