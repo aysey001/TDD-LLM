@@ -39,8 +39,8 @@ while linting_result == false and attempts > 3
 ```
 
 ### Design and Architecture
-![Architecture](Conceptional1.png)
-![Design](tdd-llm-design.png)
+![Architecture](Architecture.png)
+![Design](Conceptional1.png)
 
 
 ### Pseudo-Code
