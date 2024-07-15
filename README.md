@@ -39,7 +39,7 @@ while linting_result == false and attempts > 3
 ```
 
 ### Design and Architecture
-![Architecture](Architecture.png)
+![Architecture](Conceptional1.png)
 ![Design](tdd-llm-design.png)
 
 
